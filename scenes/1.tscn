@@ -45,12 +45,12 @@ script = ExtResource("2_33y0t")
 transform = Transform3D(-0.164228, -0.172968, 0.971139, -0.00484114, 0.984636, 0.174553, -0.98641, 0.0239652, -0.162543, 93.2722, -8.404, 197.326)
 
 [node name="Camera3D2" type="Camera3D" parent="CameraPivot"]
-transform = Transform3D(1, 8.3819e-08, -7.89762e-07, 0, 1, 1.98372e-07, 0, -4.63333e-08, 1, -2.06023, -2.00938, 8.16218)
+transform = Transform3D(1, 8.3819e-08, -7.89762e-07, 0, 1, 2.28174e-07, 0, -7.70669e-08, 1, -21.9016, 40.4574, -8.6744)
 cull_mask = 1048567
 fov = 63.1416
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000480652, 0.160004, -4.01801)
+transform = Transform3D(1, 8.3819e-08, -7.89762e-07, 0, 1, 1.83471e-07, 0, -1.55997e-08, 1, -0.000473022, 0.160004, -4.01801)
 fov = 63.1416
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
@@ -110,4 +110,4 @@ autowrap_mode = 0
 script = ExtResource("1_42et1")
 
 [node name="Player" parent="." instance=ExtResource("1_m5p46")]
-transform = Transform3D(-0.623552, 0, -0.781782, 0, 1, 0, 0.781782, 0, -0.623552, 80.0698, 16.0079, 195.065)
+transform = Transform3D(-0.623552, 0, -0.781782, 0, 1, 0, 0.781782, 0, -0.623552, 72.2528, 32.2176, 228.822)
