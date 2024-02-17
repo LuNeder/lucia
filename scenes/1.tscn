@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://clmkaaqhh6fes"]
+[gd_scene load_steps=18 format=3 uid="uid://clmkaaqhh6fes"]
 
 [ext_resource type="Script" path="res://scripts/coords.gd" id="1_42et1"]
 [ext_resource type="Texture2D" uid="uid://c2d457ftuavca" path="res://icon.svg" id="1_eblid"]
@@ -14,12 +14,36 @@
 [ext_resource type="Texture2D" uid="uid://doj4wun0oiru8" path="res://scenes/1_slot0_normal_roughness.png" id="8_lb6pl"]
 [ext_resource type="PackedScene" uid="uid://dwre5j6l2wbas" path="res://scenes/WaterArea.tscn" id="10_l6fg5"]
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gwufm"]
+sky_top_color = Color(0.133333, 0.368627, 1, 1)
+sky_horizon_color = Color(0.583333, 0.634314, 0.783333, 1)
+ground_bottom_color = Color(0.2, 0.168627, 0.133333, 1)
+ground_horizon_color = Color(0.583333, 0.634314, 0.783333, 1)
+
+[sub_resource type="Sky" id="Sky_ws31m"]
+sky_material = SubResource("ProceduralSkyMaterial_gwufm")
+
+[sub_resource type="Environment" id="Environment_5piuq"]
+background_mode = 2
+sky = SubResource("Sky_ws31m")
+tonemap_mode = 2
+glow_enabled = true
+
 [sub_resource type="Resource" id="Resource_xiyxf"]
 script = ExtResource("6_5tllw")
 mode = 0
 textures = [[ExtResource("7_bm0b5")], [ExtResource("8_lb6pl")]]
 
 [node name="Node3D" type="Node3D"]
+
+[node name="env" type="Node3D" parent="."]
+
+[node name="Sun" type="DirectionalLight3D" parent="env"]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="env"]
+environment = SubResource("Environment_5piuq")
 
 [node name="WaterArea2" parent="." instance=ExtResource("10_l6fg5")]
 transform = Transform3D(16.16, 0, 0, 0, 16.16, 0, 0, 0, 16.16, 15.0229, 4.10097, 223.601)
@@ -40,22 +64,6 @@ transform = Transform3D(0.553653, 0, 0.832747, 0, 1, 0, -0.832747, 0, 0.553653, 
 shaded = true
 texture = ExtResource("1_eblid")
 script = ExtResource("2_33y0t")
-
-[node name="CameraPivot" type="Marker3D" parent="."]
-transform = Transform3D(-0.164228, -0.172968, 0.971139, -0.00484114, 0.984636, 0.174553, -0.98641, 0.0239652, -0.162543, 93.2722, -8.404, 197.326)
-
-[node name="Camera3D2" type="Camera3D" parent="CameraPivot"]
-transform = Transform3D(1, 8.3819e-08, -7.89762e-07, 0, 1, 2.28174e-07, 0, -7.70669e-08, 1, -21.9016, 40.4574, -8.6744)
-cull_mask = 1048567
-fov = 63.1416
-
-[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
-transform = Transform3D(1, 8.3819e-08, -7.89762e-07, 0, 1, 1.83471e-07, 0, -1.55997e-08, 1, -0.000473022, 0.160004, -4.01801)
-fov = 63.1416
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.997311, 0.0732904, -1.28454e-08, -0.0283151, 0.385302, 0.922356, 0.0675999, -0.919876, 0.386341, -2.27304, 74.7245, 4.7713)
-light_color = Color(0.678431, 0.996078, 0.94902, 1)
 
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
 transform = Transform3D(0.997311, 0.0732904, -1.85764e-09, -0.0688143, 0.936401, 0.344119, 0.0252206, -0.343193, 0.938926, 0.664758, 0.865241, 1.9598)
@@ -111,3 +119,15 @@ script = ExtResource("1_42et1")
 
 [node name="Player" parent="." instance=ExtResource("1_m5p46")]
 transform = Transform3D(-0.623552, 0, -0.781782, 0, 1, 0, 0.781782, 0, -0.623552, 72.2528, 32.2176, 228.822)
+
+[node name="CameraPivot" type="Marker3D" parent="."]
+transform = Transform3D(-0.164228, -0.172968, 0.971139, -0.00484114, 0.984636, 0.174553, -0.98641, 0.0239652, -0.162543, 93.2722, -8.404, 197.326)
+
+[node name="Camera3D2" type="Camera3D" parent="CameraPivot"]
+transform = Transform3D(1, 8.3819e-08, -7.89762e-07, 0, 1, 2.28174e-07, 0, -7.70669e-08, 1, -21.9016, 40.4574, -8.6744)
+cull_mask = 1048567
+fov = 63.1416
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
+transform = Transform3D(1, 8.3819e-08, -7.89762e-07, 0, 1, 1.83471e-07, 0, -1.55997e-08, 1, -0.000473022, 0.160004, -4.01801)
+fov = 63.1416
