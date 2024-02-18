@@ -12,7 +12,7 @@
 [ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="6_5tllw"]
 [ext_resource type="Texture2D" uid="uid://cac7en41v4gno" path="res://scenes/1_slot0_albedo_bump.png" id="7_bm0b5"]
 [ext_resource type="Texture2D" uid="uid://doj4wun0oiru8" path="res://scenes/1_slot0_normal_roughness.png" id="8_lb6pl"]
-[ext_resource type="PackedScene" path="res://scenes/WaterArea.tscn" id="10_l6fg5"]
+[ext_resource type="PackedScene" uid="uid://buxj0ffwrhupe" path="res://scenes/WaterArea.tscn" id="10_l6fg5"]
 [ext_resource type="PackedScene" uid="uid://fwueot7g7lg6" path="res://scenes/ocean/Ocean.tscn" id="14_m6b30"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gwufm"]
@@ -50,7 +50,7 @@ environment = SubResource("Environment_5piuq")
 transform = Transform3D(16.16, 0, 0, 0, 16.16, 0, 0, 0, 16.16, 15.0229, 4.10097, 223.601)
 
 [node name="WaterArea" parent="." instance=ExtResource("10_l6fg5")]
-transform = Transform3D(14.81, 0, 0, 0, 14.81, 0, 0, 0, 14.81, 25.1757, 4.26315, 241.401)
+transform = Transform3D(14.81, 0, 0, 0, 14.81, 0, 0, 0, 14.81, 25.1757, -4.15978, 241.401)
 
 [node name="AirArea2" parent="." instance=ExtResource("1_mauf7")]
 transform = Transform3D(15.05, 0, 0, 0, 15.05, 0, 0, 0, 15.05, 67.1697, -11.9436, 188.755)
@@ -119,7 +119,7 @@ autowrap_mode = 0
 script = ExtResource("1_42et1")
 
 [node name="Player" parent="." instance=ExtResource("1_m5p46")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.883, 4.862, 241.481)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.3702, 3.6403, 260.672)
 
 [node name="CameraPivot" type="Marker3D" parent="."]
 transform = Transform3D(-0.164228, -0.172968, 0.971139, -0.00484114, 0.984636, 0.174553, -0.98641, 0.0239652, -0.162543, 93.2722, -8.404, 197.326)
@@ -134,7 +134,7 @@ transform = Transform3D(1, 8.3819e-08, -7.89762e-07, 0, 1, 1.83471e-07, 0, -1.55
 fov = 63.1416
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.4845, 3.6569, 254.306)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.4845, 3.6569, 251.926)
 use_collision = true
 collision_layer = 5
 size = Vector3(9.67664, 0.592651, 9.64205)
@@ -143,7 +143,7 @@ size = Vector3(9.67664, 0.592651, 9.64205)
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.295, 5.5284, 254.306)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.295, 5.5284, 251.926)
 use_collision = true
 collision_layer = 5
 size = Vector3(9.67664, 0.592651, 9.64205)
