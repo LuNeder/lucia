@@ -32,7 +32,7 @@ func _ready():
 
 func _physics_process(delta):
 	#Movement
-	if Input.is_action_pressed("move_down"): # todo: water movement
+	if Input.is_action_pressed("move_down") and not PlayerVariables.underwater: # todo: water movement
 		current_speed = crouching_speed
 	else:
 		if Input.is_action_pressed("sprint"):
