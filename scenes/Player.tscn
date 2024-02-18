@@ -1,10 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://cc83u4jeon8cv"]
+[gd_scene load_steps=5 format=3 uid="uid://cc83u4jeon8cv"]
 
 [ext_resource type="Script" path="res://scripts/Player.gd" id="1_47355"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_vkh2m"]
+height = 1.74
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_caoc6"]
+height = 1.74
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1jkm2"]
+height = 1.24
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.263929, -1.90735e-06, -0.172562)
@@ -22,8 +27,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82, 0)
 mesh = SubResource("CapsuleMesh_vkh2m")
 skeleton = NodePath("../..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="standing_CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_caoc6")
+
+[node name="crouching_CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+shape = SubResource("CapsuleShape3D_1jkm2")
+disabled = true
 
 [node name="Area3D" type="Area3D" parent="."]
 collision_layer = 9
