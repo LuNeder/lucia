@@ -50,9 +50,7 @@ func _physics_process(delta):
 		if Input.is_action_pressed("sprint"): # Sprint
 			sprinting = true
 			current_speed = sprint_speed
-		elif sprinting and Input.is_action_pressed("move_forward"): # Sticky
-				sprinting = true
-		else:
+		elif not(sprinting and Input.is_action_pressed("move_forward")): # Sticky
 			sprinting = false
 			current_speed = walking_speed
 		
