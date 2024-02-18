@@ -74,8 +74,11 @@ func _physics_process(delta):
 	if (not is_on_floor()) and (not underwater): # If in the air, fall towards the floor. Literally gravity
 		target_velocity.y -= (gravity * delta)
 	# Jump
-	if (is_on_floor() or underwater) and Input.is_action_pressed("move_up"):
+	if is_on_floor() and Input.is_action_pressed("move_up"): 
 		target_velocity.y = jump_impulse
+	
+	if underwater and Input.is_action_pressed("move_up"): # todo: not move up forever, not keep moving down if fall in water
+		position.y += 1
 	# Moving the Character
 	velocity = target_velocity
 	move_and_slide()
