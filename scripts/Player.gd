@@ -4,6 +4,7 @@ extends CharacterBody3D
 @onready var standing_collision_shape = $standing_CollisionShape3D
 @onready var crouching_collision_shape = $crouching_CollisionShape3D
 @onready var ray_cast_3d = $RayCast3D
+@onready var ocean = $"../Ocean"
 
 var sprinting = false
 var previous_uw = true
@@ -131,3 +132,6 @@ func _physics_process(delta):
 	print(current_speed)
 	print(input_dir)
 	print(-(global_transform.basis.y.normalized()).cross(Vector3.UP))
+	
+	ocean.position.x = self.position.x;
+	ocean.position.z = self.position.z;

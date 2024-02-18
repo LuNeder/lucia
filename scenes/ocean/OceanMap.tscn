@@ -1,9 +1,9 @@
 [gd_scene load_steps=8 format=3 uid="uid://bfui2hjydd0i0"]
 
-[ext_resource type="PackedScene" uid="uid://byk6ut5151qmd" path="res://Scenes/Ocean.tscn" id="1_gd7la"]
+[ext_resource type="PackedScene" uid="uid://fwueot7g7lg6" path="res://scenes/ocean/Ocean.tscn" id="1_gd7la"]
 [ext_resource type="Texture2D" uid="uid://csgkmtkowgdj8" path="res://Resources/AllSkyFree_Sky_EpicBlueSunset_Equirect.png" id="2_jgmo4"]
-[ext_resource type="PackedScene" uid="uid://dxyoy44d0ih1s" path="res://Scenes/3Dpawn.tscn" id="3_5ua58"]
-[ext_resource type="Script" path="res://Scenes/3Dpawn.gd" id="4_i4vuc"]
+[ext_resource type="PackedScene" uid="uid://btgmv3f0lnwpi" path="res://scenes/ocean/3Dpawn.tscn" id="3_5ua58"]
+[ext_resource type="Script" path="res://scenes/ocean/3Dpawn.gd" id="4_i4vuc"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_n8ust"]
 panorama = ExtResource("2_jgmo4")
@@ -20,7 +20,7 @@ reflected_light_source = 2
 [node name="OceanMap" type="Node3D"]
 
 [node name="Ocean" parent="." instance=ExtResource("1_gd7la")]
-transform = Transform3D(6, 0, 0, 0, 1, 0, 0, 0, 6, 0, 0, 0)
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_pg8xi")
@@ -29,5 +29,5 @@ environment = SubResource("Environment_pg8xi")
 transform = Transform3D(1, 0, 0, 0, 0.987414, 0.158158, 0, -0.158158, 0.987414, 0, 0, 0)
 
 [node name="3Dpawn" parent="." instance=ExtResource("3_5ua58")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 27.7865, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.29531, 0)
 script = ExtResource("4_i4vuc")

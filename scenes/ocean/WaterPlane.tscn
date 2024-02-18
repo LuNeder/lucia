@@ -1,24 +1,23 @@
-[gd_scene load_steps=12 format=3 uid="uid://dbt5pfn1trdyj"]
+[gd_scene load_steps=12 format=3 uid="uid://cvb2tjos0wmjc"]
 
-[ext_resource type="Shader" path="res://Shaders/Water.gdshader" id="1_w1tkc"]
+[ext_resource type="Shader" path="res://shaders/Water-ocean.gdshader" id="1_kbplt"]
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_gg3e2"]
-resource_local_to_scene = true
+[sub_resource type="PlaneMesh" id="PlaneMesh_ag74k"]
 size = Vector2(10.05, 10.05)
 subdivide_width = 199
 subdivide_depth = 199
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_avos1"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_21cs4"]
 noise_type = 3
 frequency = 0.032
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_a5tqk"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_icbrf"]
 seamless = true
 as_normal_map = true
 bump_strength = 1.6
-noise = SubResource("FastNoiseLite_avos1")
+noise = SubResource("FastNoiseLite_21cs4")
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_77aww"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_543rq"]
 noise_type = 0
 seed = 22
 frequency = 0.003
@@ -26,36 +25,36 @@ fractal_lacunarity = 1.6
 fractal_gain = 0.47
 fractal_weighted_strength = 0.53
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_nnc11"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_k33jm"]
 seamless = true
 seamless_blend_skirt = 0.532
 as_normal_map = true
 bump_strength = 21.8
-noise = SubResource("FastNoiseLite_77aww")
+noise = SubResource("FastNoiseLite_543rq")
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_aaxb1"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_kub38"]
 noise_type = 4
 fractal_type = 2
 fractal_gain = 0.34
 fractal_weighted_strength = 0.6
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_h0chw"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_2r6nl"]
 seamless = true
-noise = SubResource("FastNoiseLite_aaxb1")
+noise = SubResource("FastNoiseLite_kub38")
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_yilox"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_a5p56"]
 noise_type = 4
 fractal_gain = 0.34
 fractal_weighted_strength = 0.6
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xq016"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_sbrqa"]
 seamless = true
 as_normal_map = true
-noise = SubResource("FastNoiseLite_yilox")
+noise = SubResource("FastNoiseLite_a5p56")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ykp76"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jk1x3"]
 render_priority = 0
-shader = ExtResource("1_w1tkc")
+shader = ExtResource("1_kbplt")
 shader_parameter/albedo = Color(0, 0.32, 0.43, 1)
 shader_parameter/albedo2 = Color(0, 0.47, 0.76, 1)
 shader_parameter/metallic = 0.0
@@ -73,11 +72,11 @@ shader_parameter/edge_scale = 0.3
 shader_parameter/near = 1.0
 shader_parameter/far = 100.0
 shader_parameter/edge_color = Color(1, 1, 1, 1)
-shader_parameter/wave = SubResource("NoiseTexture2D_h0chw")
-shader_parameter/wave_bump = SubResource("NoiseTexture2D_xq016")
-shader_parameter/texture_normal = SubResource("NoiseTexture2D_a5tqk")
-shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_nnc11")
+shader_parameter/wave = SubResource("NoiseTexture2D_2r6nl")
+shader_parameter/wave_bump = SubResource("NoiseTexture2D_sbrqa")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_icbrf")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_k33jm")
 
 [node name="WaterPlane" type="MeshInstance3D"]
-mesh = SubResource("PlaneMesh_gg3e2")
-surface_material_override/0 = SubResource("ShaderMaterial_ykp76")
+mesh = SubResource("PlaneMesh_ag74k")
+surface_material_override/0 = SubResource("ShaderMaterial_jk1x3")

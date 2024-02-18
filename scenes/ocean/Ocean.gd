@@ -2,7 +2,7 @@
 
 extends Node3D
 
-var OceanTile = preload("res://Scenes/WaterPlane.tscn");
+var OceanTile = preload("res://scenes/ocean/WaterPlane.tscn");
 var spawnPoint = preload("res://Resources/GridSpawnInfo.tres");
 
 # Creates tile grid for infinite ocean

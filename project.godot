@@ -114,3 +114,7 @@ sgt_wind_pattern={
 "type": "sampler2D",
 "value": "res://addons/simplegrasstextured/images/wind_pattern.png"
 }
+ocean_pos={
+"type": "vec3",
+"value": Vector3(0, 0, 0)
+}

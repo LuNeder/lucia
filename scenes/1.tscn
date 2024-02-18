@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://clmkaaqhh6fes"]
+[gd_scene load_steps=19 format=3 uid="uid://clmkaaqhh6fes"]
 
 [ext_resource type="Script" path="res://scripts/coords.gd" id="1_42et1"]
 [ext_resource type="Texture2D" uid="uid://c2d457ftuavca" path="res://icon.svg" id="1_eblid"]
@@ -12,7 +12,8 @@
 [ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="6_5tllw"]
 [ext_resource type="Texture2D" uid="uid://cac7en41v4gno" path="res://scenes/1_slot0_albedo_bump.png" id="7_bm0b5"]
 [ext_resource type="Texture2D" uid="uid://doj4wun0oiru8" path="res://scenes/1_slot0_normal_roughness.png" id="8_lb6pl"]
-[ext_resource type="PackedScene" uid="uid://dwre5j6l2wbas" path="res://scenes/WaterArea.tscn" id="10_l6fg5"]
+[ext_resource type="PackedScene" path="res://scenes/WaterArea.tscn" id="10_l6fg5"]
+[ext_resource type="PackedScene" uid="uid://fwueot7g7lg6" path="res://scenes/ocean/Ocean.tscn" id="14_m6b30"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gwufm"]
 sky_top_color = Color(0.133333, 0.368627, 1, 1)
@@ -137,6 +138,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.4845, 3.6569, 254.306)
 use_collision = true
 collision_layer = 5
 size = Vector3(9.67664, 0.592651, 9.64205)
+
+[node name="Ocean" parent="." instance=ExtResource("14_m6b30")]
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.295, 5.5284, 254.306)
