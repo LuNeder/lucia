@@ -2,6 +2,7 @@ extends CharacterBody3D
 @onready var head = $Head
 @onready var standing_collision_shape = $standing_CollisionShape3D
 @onready var crouching_collision_shape = $crouching_CollisionShape3D
+@onready var ray_cast_3d = $RayCast3D
 
 
 # How fast the player moves in meters per second.
@@ -43,19 +44,18 @@ func _physics_process(delta):
 		head.position.y = lerp(head.position.y, heigh + crouching_depth, delta*lerp_speed)
 		crouching_collision_shape.disabled = false
 		standing_collision_shape.disabled = true
-	else:
+	elif not ray_cast_3d.is_colliding():
 		standing_collision_shape.disabled = false
 		crouching_collision_shape.disabled = true
 		head.position.y = lerp(head.position.y, heigh, delta*lerp_speed)
 		if Input.is_action_pressed("sprint"):
 			sprinting = true
 			current_speed = sprint_speed
-		else:
-			if sprinting and Input.is_action_pressed("move_forward"):
+		elif sprinting and Input.is_action_pressed("move_forward"):
 				sprinting = true
-			else:
-				sprinting = false
-				current_speed = walking_speed
+		else:
+			sprinting = false
+			current_speed = walking_speed
 		
 	# We create a local variable to store the input direction.
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
