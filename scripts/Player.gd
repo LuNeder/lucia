@@ -9,6 +9,7 @@ extends CharacterBody3D
 # The downward acceleration when in the air, in meters per second squared.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")*10
 @export var jump_impulse = 40
+@export var crouching_depth = -0.5
 
 #var lerp_speed = 100 - kinda buggy
 @export var mouse_sens = 0.4
@@ -18,7 +19,7 @@ var direction = Vector3.ZERO
 
 @onready var parea = $Area3D 
 
-
+var sprinting = false
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -35,9 +36,14 @@ func _physics_process(delta):
 		current_speed = crouching_speed
 	else:
 		if Input.is_action_pressed("sprint"):
+			sprinting = true
 			current_speed = sprint_speed
 		else:
-			current_speed = walking_speed # todo: sticky sprint so u dont have to keep holding
+			if sprinting and Input.is_action_pressed("move_forward"):
+				sprinting = true
+			else:
+				sprinting = false
+				current_speed = walking_speed
 		
 	# We create a local variable to store the input direction.
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
@@ -76,4 +82,5 @@ func _physics_process(delta):
 	# testing
 	print('underwater ' + str(PlayerVariables.underwater))
 	print(str(parea.get_overlapping_areas())) # This detects the areas!!
+	print(current_speed)
 
