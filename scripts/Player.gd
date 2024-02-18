@@ -28,13 +28,13 @@ var direction = Vector3.ZERO
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		print(event)
+		
 		rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
 		if not PlayerVariables.underwater:
 			head.rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(90))
 		else:
-			rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
+			rotate_object_local(get_global_transform().basis.x,(-deg_to_rad(event.relative.y * mouse_sens)))
 			rotation.x = clamp(rotation.x, deg_to_rad(-89), deg_to_rad(90))
 
 func _ready():
@@ -109,4 +109,4 @@ func _physics_process(delta):
 	print(str(parea.get_overlapping_areas())) # This detects the areas!!
 	print(current_speed)
 	print(input_dir)
-	
+	print(get_global_transform().basis.y)
