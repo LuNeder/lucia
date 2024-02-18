@@ -1,21 +1,37 @@
 extends CharacterBody3D
+@onready var head = $Head
 
 # How fast the player moves in meters per second.
-@export var speed = 14
+@export var current_speed = 7
+@export var walking_speed = 7
+@export var sprint_speed = 14
+@export var crouching_speed = 4
 # The downward acceleration when in the air, in meters per second squared.
 @export var fall_acceleration = 75
 @export var jump_impulse = 20
 
-var target_velocity = Vector3.ZERO
+@export var mouse_sens = 0.4
 
+var target_velocity = Vector3.ZERO
 
 @onready var parea = $Area3D 
 
+func _input(event):
+	if event is InputEventMouseMotion:
+		rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
+		head.rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
+		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(90))
+
 func _ready():
-	pass
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _physics_process(delta):
 	#Movement
+	if Input.is_action_pressed("sprint"):
+		current_speed = sprint_speed
+	else:
+		current_speed = walking_speed # todo: sticky sprint so u dont have to keep holding
+		
 	# We create a local variable to store the input direction.
 	var direction = Vector3.ZERO
 	# We check for each move input and update the direction accordingly.
@@ -33,13 +49,13 @@ func _physics_process(delta):
 		direction = direction.normalized()
 		$Pivot.look_at(position + direction, Vector3.UP)
 	# Ground Velocity
-	target_velocity.x = direction.x * speed
-	target_velocity.z = direction.z * speed
+	target_velocity.x = direction.x * current_speed
+	target_velocity.z = direction.z * current_speed
 	# Vertical Velocity
 	if not is_on_floor(): # If in the air, fall towards the floor. Literally gravity
 		target_velocity.y -= (fall_acceleration * delta)
 	# Jump
-	if is_on_floor() and Input.is_action_just_pressed("move_up"):
+	if is_on_floor() and Input.is_action_pressed("move_up"):
 		target_velocity.y = jump_impulse
 	# Moving the Character
 	velocity = target_velocity
