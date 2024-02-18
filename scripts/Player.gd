@@ -89,9 +89,9 @@ func _physics_process(delta):
 	
 	# Is she underwater?
 	if position.y <= 0:
-		underwater = not ("AirArea" in str(parea.get_overlapping_areas()))
+		PlayerVariables.underwater = not ("AirArea" in str(parea.get_overlapping_areas()))
 	else:
-		underwater = ("WaterArea" in str(parea.get_overlapping_areas()))
+		PlayerVariables.underwater = ("WaterArea" in str(parea.get_overlapping_areas()))
 		
 
 	# testing
