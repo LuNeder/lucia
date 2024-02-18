@@ -1,32 +1,31 @@
 extends CharacterBody3D
+@onready var parea = $Area3D
 @onready var head = $Head
 @onready var standing_collision_shape = $standing_CollisionShape3D
 @onready var crouching_collision_shape = $crouching_CollisionShape3D
 @onready var ray_cast_3d = $RayCast3D
 
+var sprinting = false
+var underwater = PlayerVariables.underwater
 
-# How fast the player moves in meters per second.
+# Speeds in meters per second.
 @export var current_speed = 7
 @export var walking_speed = 7
 @export var sprint_speed = 14
 @export var crouching_speed = 2
-# The downward acceleration when in the air, in meters per second squared.
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")*10
+# jumping and crouching
 @export var jump_impulse = 40
 @export var crouching_depth = -0.5
 @export var heigh = 1.64/2
-
-var lerp_speed = 10
-@export var mouse_sens = 0.4
+# The downward acceleration when in the air, in meters per second squared. (gravity)
+var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")*10
 
 var target_velocity = Vector3.ZERO
 var direction = Vector3.ZERO
+@export var mouse_sens = 0.4
+@export var lerp_speed = 10 
 
-@onready var parea = $Area3D 
 
-var sprinting = false
-
-var underwater = PlayerVariables.underwater
 
 func _input(event):
 	if event is InputEventMouseMotion:
