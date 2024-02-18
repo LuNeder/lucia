@@ -8,6 +8,14 @@ extends CharacterBody3D
 var sprinting = false
 var previous_uw = true
 
+var rotAngle = 0
+var charTf = 0
+var rotTf = 0
+var pVec = Vector3.ZERO
+var pVec1 = Vector3.ZERO
+var pVec2 = Vector3.ZERO
+
+
 # Speeds in meters per second.
 @export var current_speed = 7
 @export var walking_speed = 7
@@ -31,11 +39,24 @@ func _input(event):
 		
 		rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
 		if not PlayerVariables.underwater:
+			#rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
 			head.rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(90))
 		else:
-			rotate_object_local(get_global_transform().basis.x,(-deg_to_rad(event.relative.y * mouse_sens)))
-			rotation.x = clamp(rotation.x, deg_to_rad(-89), deg_to_rad(90))
+			rotAngle = (-deg_to_rad(event.relative.y * mouse_sens))
+			pVec1 = (-transform.basis.y.normalized()).cross(Vector3.UP).normalized()
+			pVec2 = (-transform.basis.z.normalized()).cross(Vector3.UP).normalized()
+			pVec = pVec1+pVec2
+			rotTf = Transform3D().rotated(pVec, rotAngle)
+			charTf = transform.rotated(pVec, rotAngle)
+			
+			head.rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
+			
+			#rotate_x(deg_to_rad(event.relative.y * mouse_sens) * pVec1.z)
+			#rotate_z(deg_to_rad(event.relative.y * mouse_sens) * pVec1.x)
+			#rotate_object_local(pVec,rotAngle)
+			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
+			#rotation.z = clamp(rotation.z, deg_to_rad(-91), deg_to_rad(-1))
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -109,4 +130,4 @@ func _physics_process(delta):
 	print(str(parea.get_overlapping_areas())) # This detects the areas!!
 	print(current_speed)
 	print(input_dir)
-	print(get_global_transform().basis.y)
+	print(-(global_transform.basis.y.normalized()).cross(Vector3.UP))

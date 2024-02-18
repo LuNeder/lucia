@@ -118,7 +118,7 @@ autowrap_mode = 0
 script = ExtResource("1_42et1")
 
 [node name="Player" parent="." instance=ExtResource("1_m5p46")]
-transform = Transform3D(-0.623552, 0, -0.781782, 0, 1, 0, 0.781782, 0, -0.623552, 23.883, 4.862, 254.008)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.883, 4.862, 241.481)
 
 [node name="CameraPivot" type="Marker3D" parent="."]
 transform = Transform3D(-0.164228, -0.172968, 0.971139, -0.00484114, 0.984636, 0.174553, -0.98641, 0.0239652, -0.162543, 93.2722, -8.404, 197.326)
