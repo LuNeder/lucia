@@ -6,7 +6,6 @@ extends CharacterBody3D
 @onready var ray_cast_3d = $RayCast3D
 
 var sprinting = false
-var underwater = PlayerVariables.underwater
 
 # Speeds in meters per second.
 @export var current_speed = 7
@@ -38,7 +37,7 @@ func _ready():
 
 func _physics_process(delta):
 	#Movement # todo: water movement
-	if Input.is_action_pressed("move_down") and not underwater: # Crouching
+	if Input.is_action_pressed("move_down") and not PlayerVariables.underwater: # Crouching
 		current_speed = crouching_speed
 		head.position.y = lerp(head.position.y, heigh + crouching_depth, delta*lerp_speed)
 		crouching_collision_shape.disabled = false
@@ -72,13 +71,13 @@ func _physics_process(delta):
 	target_velocity.x = direction.x * current_speed
 	target_velocity.z = direction.z * current_speed
 	# Vertical Velocity
-	if (not is_on_floor()) and (not underwater): # If in the air, fall towards the floor. Literally gravity
+	if (not is_on_floor()) and (not PlayerVariables.underwater): # If in the air, fall towards the floor. Literally gravity
 		target_velocity.y -= (gravity * delta)
 	# Jump
 	if is_on_floor() and Input.is_action_pressed("move_up"): 
 		target_velocity.y = jump_impulse
 	
-	if underwater and Input.is_action_pressed("move_up"): # todo: not move up forever, not keep moving down if fall in water
+	if PlayerVariables.underwater and Input.is_action_pressed("move_up"): # todo: not move up forever, not keep moving down if fall in water
 		position.y += 1
 	# Moving the Character
 	velocity = target_velocity
@@ -92,7 +91,7 @@ func _physics_process(delta):
 		
 
 	# testing
-	print('underwater ' + str(underwater))
+	print('underwater ' + str(PlayerVariables.underwater))
 	print(str(parea.get_overlapping_areas())) # This detects the areas!!
 	print(current_speed)
 
