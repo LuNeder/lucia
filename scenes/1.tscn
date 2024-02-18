@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://clmkaaqhh6fes"]
+[gd_scene load_steps=20 format=3 uid="uid://clmkaaqhh6fes"]
 
 [ext_resource type="Script" path="res://scripts/coords.gd" id="1_42et1"]
 [ext_resource type="Texture2D" uid="uid://c2d457ftuavca" path="res://icon.svg" id="1_eblid"]
@@ -33,6 +33,10 @@ glow_enabled = true
 script = ExtResource("6_5tllw")
 mode = 0
 textures = [[ExtResource("7_bm0b5")], [ExtResource("8_lb6pl")]]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_icefw"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_tra0s"]
 
 [node name="Node3D" type="Node3D"]
 
@@ -117,8 +121,30 @@ fit_content = true
 autowrap_mode = 0
 script = ExtResource("1_42et1")
 
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+transform = Transform3D(-6.23552, 0, -7.81782, 0, 1, 0, 7.81782, 0, -6.23552, 18.519, 3.25742, 254.67)
+collision_layer = 5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("BoxShape3D_icefw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+mesh = SubResource("BoxMesh_tra0s")
+skeleton = NodePath("../CollisionShape3D")
+
+[node name="RigidBody3D2" type="RigidBody3D" parent="."]
+transform = Transform3D(-6.23552, 0, -7.81782, 0, 1, 0, 7.81782, 0, -6.23552, 18.519, 5.78254, 257.445)
+collision_layer = 5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D2"]
+shape = SubResource("BoxShape3D_icefw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2"]
+mesh = SubResource("BoxMesh_tra0s")
+skeleton = NodePath("../CollisionShape3D")
+
 [node name="Player" parent="." instance=ExtResource("1_m5p46")]
-transform = Transform3D(-0.623552, 0, -0.781782, 0, 1, 0, 0.781782, 0, -0.623552, 72.2528, 32.2176, 228.822)
+transform = Transform3D(-0.623552, 0, -0.781782, 0, 1, 0, 0.781782, 0, -0.623552, 23.883, 4.862, 254.008)
 
 [node name="CameraPivot" type="Marker3D" parent="."]
 transform = Transform3D(-0.164228, -0.172968, 0.971139, -0.00484114, 0.984636, 0.174553, -0.98641, 0.0239652, -0.162543, 93.2722, -8.404, 197.326)

@@ -41,7 +41,11 @@ func _physics_process(delta):
 	if Input.is_action_pressed("move_down") and not underwater: # todo: water movement
 		current_speed = crouching_speed
 		head.position.y = lerp(head.position.y, heigh + crouching_depth, delta*lerp_speed)
+		crouching_collision_shape.disabled = false
+		standing_collision_shape.disabled = true
 	else:
+		standing_collision_shape.disabled = false
+		crouching_collision_shape.disabled = true
 		head.position.y = lerp(head.position.y, heigh, delta*lerp_speed)
 		if Input.is_action_pressed("sprint"):
 			sprinting = true
