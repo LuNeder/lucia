@@ -37,20 +37,20 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _physics_process(delta):
-	#Movement
-	if Input.is_action_pressed("move_down") and not underwater: # todo: water movement
+	#Movement # todo: water movement
+	if Input.is_action_pressed("move_down") and not underwater: # Crouching
 		current_speed = crouching_speed
 		head.position.y = lerp(head.position.y, heigh + crouching_depth, delta*lerp_speed)
 		crouching_collision_shape.disabled = false
 		standing_collision_shape.disabled = true
-	elif not ray_cast_3d.is_colliding():
+	elif not ray_cast_3d.is_colliding(): # Can she stand up?
 		standing_collision_shape.disabled = false
 		crouching_collision_shape.disabled = true
 		head.position.y = lerp(head.position.y, heigh, delta*lerp_speed)
-		if Input.is_action_pressed("sprint"):
+		if Input.is_action_pressed("sprint"): # Sprint
 			sprinting = true
 			current_speed = sprint_speed
-		elif sprinting and Input.is_action_pressed("move_forward"):
+		elif sprinting and Input.is_action_pressed("move_forward"): # Sticky
 				sprinting = true
 		else:
 			sprinting = false
