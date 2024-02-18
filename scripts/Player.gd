@@ -50,12 +50,12 @@ func _input(event):
 			rotTf = Transform3D().rotated(pVec, rotAngle)
 			charTf = transform.rotated(pVec, rotAngle)
 			
-			head.rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
+			rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
 			
 			#rotate_x(deg_to_rad(event.relative.y * mouse_sens) * pVec1.z)
 			#rotate_z(deg_to_rad(event.relative.y * mouse_sens) * pVec1.x)
 			#rotate_object_local(pVec,rotAngle)
-			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
+			#head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
 			#rotation.z = clamp(rotation.z, deg_to_rad(-91), deg_to_rad(-1))
 
 func _ready():
