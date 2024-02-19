@@ -141,6 +141,8 @@ func _physics_process(delta):
 		rotation.x = 0
 		rotation.z = 0
 		head.rotation.x = 0
+		if Input.is_action_pressed("move_up") or Input.is_action_pressed("move_forward"):
+			target_velocity.y = jump_impulse
 
 	# testing
 	print('underwater ' + str(PlayerVariables.underwater))
