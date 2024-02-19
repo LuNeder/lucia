@@ -4,8 +4,6 @@
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ag74k"]
 size = Vector2(10.05, 10.05)
-subdivide_width = 199
-subdivide_depth = 199
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_21cs4"]
 noise_type = 3
