@@ -1,30 +1,13 @@
 [gd_scene load_steps=6 format=3 uid="uid://buxj0ffwrhupe"]
 
 [ext_resource type="Script" path="res://scripts/WaterArea.gd" id="1_74gf6"]
-[ext_resource type="Shader" path="res://shaders/Water-cartoonish.gdshader" id="2_oyqcl"]
+[ext_resource type="Shader" path="res://shaders/Water-down.gdshader" id="2_cvrcd"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yv4u6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_16kmu"]
 render_priority = 0
-shader = ExtResource("2_oyqcl")
-shader_parameter/albedo = Color(0.02, 0.45, 0.8, 1)
-shader_parameter/albedo2 = Color(0, 0.47, 0.76, 1)
-shader_parameter/metallic = 0.0
-shader_parameter/roughness = 0.05
-shader_parameter/wave_direction = Vector2(2, 0)
-shader_parameter/wave_direction2 = Vector2(0, 1)
-shader_parameter/time_scale = 0.025
-shader_parameter/noise_scale = 10.0
-shader_parameter/height_scale = 0.15
-shader_parameter/color_deep = Color(0, 0.1, 0.4, 1)
-shader_parameter/color_shallow = Color(0, 0.47, 0.76, 1)
-shader_parameter/beers_law = 2.0
-shader_parameter/depth_offset = -0.75
-shader_parameter/edge_scale = 0.1
-shader_parameter/near = 1.0
-shader_parameter/far = 100.0
-shader_parameter/edge_color = Color(1, 1, 1, 1)
+shader = ExtResource("2_cvrcd")
 
 [sub_resource type="BoxMesh" id="BoxMesh_b7kdt"]
 material = SubResource("ShaderMaterial_16kmu")
