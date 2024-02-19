@@ -63,7 +63,7 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _physics_process(delta):
-	#Movement # todo: water movement
+	# Crouching and Sprinting
 	if Input.is_action_pressed("move_down") and not PlayerVariables.underwater: # Crouching
 		current_speed = crouching_speed
 		head.position.y = lerp(head.position.y, heigh + crouching_depth, delta*lerp_speed)
@@ -93,20 +93,22 @@ func _physics_process(delta):
 
 	# Water movement
 	if PlayerVariables.underwater:
+		#direction = Vector3.ZERO
 		# up-down
 		if Input.is_action_pressed("move_up"):
 			target_velocity.y = current_speed
 		if Input.is_action_pressed("move_down"):
 			target_velocity.y = - current_speed
+		
 		# wasd
 		if Input.is_action_pressed("move_forward"):
-			direction += - head.global_transform.basis.z
+			direction = lerp(direction, ((- head.global_transform.basis.z.normalized()).normalized()), delta*lerp_speed)
 		if Input.is_action_pressed("move_back"):
-			direction  += head.global_transform.basis.z
+			direction  = lerp(direction, ((head.global_transform.basis.z.normalized()).normalized()), delta*lerp_speed)
 		if Input.is_action_pressed("move_left"):
-			direction += - head.global_transform.basis.x
+			direction = lerp(direction, ((- head.global_transform.basis.x.normalized()).normalized()), delta*lerp_speed)
 		if Input.is_action_pressed("move_right"):
-			direction += head.global_transform.basis.x
+			direction = lerp(direction, ((head.global_transform.basis.x.normalized()).normalized()), delta*lerp_speed)
 		
 	# We check for each move input and update the direction accordingly.
 	if direction:
