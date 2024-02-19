@@ -37,27 +37,12 @@ var direction = Vector3.ZERO
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		
 		rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
+		head.rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
 		if not PlayerVariables.underwater:
-			#rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
-			head.rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(90))
 		else:
-			rotAngle = (-deg_to_rad(event.relative.y * mouse_sens))
-			pVec1 = (-transform.basis.y.normalized()).cross(Vector3.UP).normalized()
-			pVec2 = (-transform.basis.z.normalized()).cross(Vector3.UP).normalized()
-			pVec = pVec1+pVec2
-			rotTf = Transform3D().rotated(pVec, rotAngle)
-			charTf = transform.rotated(pVec, rotAngle)
-			
-			head.rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
-			
-			#rotate_x(deg_to_rad(event.relative.y * mouse_sens) * pVec1.z)
-			#rotate_z(deg_to_rad(event.relative.y * mouse_sens) * pVec1.x)
-			#rotate_object_local(pVec,rotAngle)
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
-			#rotation.z = clamp(rotation.z, deg_to_rad(-91), deg_to_rad(-1))
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -146,10 +131,8 @@ func _physics_process(delta):
 
 	# testing
 	print('underwater ' + str(PlayerVariables.underwater))
-	print(str(parea.get_overlapping_areas())) # This detects the areas!!
+	# print(str(parea.get_overlapping_areas())) # This detects the areas!!
 	print(current_speed)
-	# print(input_dir)
-	print(-(global_transform.basis.y.normalized()).cross(Vector3.UP))
 	
 	ocean.position.x = self.position.x;
 	ocean.position.z = self.position.z;
