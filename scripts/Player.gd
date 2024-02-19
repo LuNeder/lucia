@@ -79,10 +79,10 @@ func _physics_process(delta):
 		elif not(sprinting and Input.is_action_pressed("move_forward")): # Sticky
 			sprinting = false
 			current_speed = walking_speed
-		
+	
+	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back") # We create a local variable to store the input direction.
 	# Land movement
 	if not PlayerVariables.underwater: 
-		var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back") # We create a local variable to store the input direction.
 		direction = lerp(direction, ((transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()), delta*lerp_speed) #- kinda buggy
 
 		if (not is_on_floor()): # If in the air, fall towards the floor. Literally gravity
@@ -93,7 +93,9 @@ func _physics_process(delta):
 
 	# Water movement
 	if PlayerVariables.underwater:
-		#direction = Vector3.ZERO
+		if input_dir == Vector2.ZERO and (not Input.is_action_pressed("move_up")) and (not Input.is_action_pressed("move_down")):
+			direction = lerp(direction, Vector3.ZERO, delta*lerp_speed)
+			target_velocity.y = lerp(target_velocity.y, 0.0, delta*lerp_speed)
 		# up-down
 		if Input.is_action_pressed("move_up"):
 			target_velocity.y = current_speed
@@ -110,11 +112,12 @@ func _physics_process(delta):
 		if Input.is_action_pressed("move_right"):
 			direction = lerp(direction, ((head.global_transform.basis.x.normalized()).normalized()), delta*lerp_speed)
 		
+		
 	# We check for each move input and update the direction accordingly.
 	if direction:
 		target_velocity.x = direction.x * current_speed
 		target_velocity.z = direction.z * current_speed
-		if PlayerVariables.underwater:
+		if PlayerVariables.underwater and (not Input.is_action_pressed("move_up")) and (not Input.is_action_pressed("move_down")):
 			target_velocity.y = direction.y * current_speed
 	else:
 		target_velocity.x = move_toward(velocity.x, 0, current_speed)
@@ -133,9 +136,11 @@ func _physics_process(delta):
 		
 	if PlayerVariables.underwater and not previous_uw:
 		rotation.x = (-deg_to_rad(90))
+		head.rotation.x = deg_to_rad(90)
 	elif previous_uw and not PlayerVariables.underwater: 
 		rotation.x = 0
 		rotation.z = 0
+		head.rotation.x = 0
 
 	# testing
 	print('underwater ' + str(PlayerVariables.underwater))
