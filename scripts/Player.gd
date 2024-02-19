@@ -51,12 +51,12 @@ func _input(event):
 			rotTf = Transform3D().rotated(pVec, rotAngle)
 			charTf = transform.rotated(pVec, rotAngle)
 			
-			rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
+			head.rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
 			
 			#rotate_x(deg_to_rad(event.relative.y * mouse_sens) * pVec1.z)
 			#rotate_z(deg_to_rad(event.relative.y * mouse_sens) * pVec1.x)
 			#rotate_object_local(pVec,rotAngle)
-			#head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
+			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
 			#rotation.z = clamp(rotation.z, deg_to_rad(-91), deg_to_rad(-1))
 
 func _ready():
@@ -80,13 +80,34 @@ func _physics_process(delta):
 			sprinting = false
 			current_speed = walking_speed
 		
-	# We create a local variable to store the input direction.
-	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
-	if PlayerVariables.underwater:
-		pass #input_dir = input_dir.rotated(Vector3(1, 0, 0), 0.5)
-	direction = lerp(direction, ((transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()), delta*lerp_speed) #- kinda buggy
-	#direction = ((transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized())
+	# Land movement
+	if not PlayerVariables.underwater: 
+		var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back") # We create a local variable to store the input direction.
+		direction = lerp(direction, ((transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()), delta*lerp_speed) #- kinda buggy
 
+		if (not is_on_floor()): # If in the air, fall towards the floor. Literally gravity
+			target_velocity.y -= (gravity * delta)
+	
+		if is_on_floor() and Input.is_action_pressed("move_up"): # Jump
+			target_velocity.y = jump_impulse
+
+	# Water movement
+	if PlayerVariables.underwater:
+		# up-down
+		if Input.is_action_pressed("move_up"):
+			target_velocity.y = current_speed
+		if Input.is_action_pressed("move_down"):
+			target_velocity.y = - current_speed
+		# wasd
+		if Input.is_action_pressed("move_forward"):
+			direction += - head.global_transform.basis.z
+		if Input.is_action_pressed("move_back"):
+			direction  += head.global_transform.basis.z
+		if Input.is_action_pressed("move_left"):
+			direction += - head.global_transform.basis.x
+		if Input.is_action_pressed("move_right"):
+			direction += head.global_transform.basis.x
+		
 	# We check for each move input and update the direction accordingly.
 	if direction:
 		target_velocity.x = direction.x * current_speed
@@ -96,18 +117,6 @@ func _physics_process(delta):
 	else:
 		target_velocity.x = move_toward(velocity.x, 0, current_speed)
 		target_velocity.z = move_toward(velocity.z, 0, current_speed)	
-
-	if (not is_on_floor()) and (not PlayerVariables.underwater): # If in the air, fall towards the floor. Literally gravity
-		target_velocity.y -= (gravity * delta)
-	
-	if is_on_floor() and Input.is_action_pressed("move_up"): # Jump
-		target_velocity.y = jump_impulse
-
-	# water movement up-down
-	if PlayerVariables.underwater and Input.is_action_pressed("move_up"):
-		target_velocity.y = current_speed
-	if PlayerVariables.underwater and Input.is_action_pressed("move_down"):
-		target_velocity.y = - current_speed
 		
 	# Moving the Character
 	velocity = target_velocity
@@ -130,7 +139,7 @@ func _physics_process(delta):
 	print('underwater ' + str(PlayerVariables.underwater))
 	print(str(parea.get_overlapping_areas())) # This detects the areas!!
 	print(current_speed)
-	print(input_dir)
+	# print(input_dir)
 	print(-(global_transform.basis.y.normalized()).cross(Vector3.UP))
 	
 	ocean.position.x = self.position.x;
