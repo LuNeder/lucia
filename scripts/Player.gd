@@ -94,8 +94,8 @@ func _physics_process(delta):
 	# Water movement
 	if PlayerVariables.underwater:
 		if input_dir == Vector2.ZERO and (not Input.is_action_pressed("move_up")) and (not Input.is_action_pressed("move_down")):
-			direction = lerp(direction, Vector3.ZERO, delta*lerp_speed)
-			target_velocity.y = lerp(target_velocity.y, 0.0, delta*lerp_speed)
+			direction = lerp(direction, Vector3.ZERO, delta*lerp_speed*0.25)
+			target_velocity.y = lerp(target_velocity.y, 0.0, delta*lerp_speed*0.25)
 		# up-down
 		if Input.is_action_pressed("move_up"):
 			target_velocity.y = current_speed
