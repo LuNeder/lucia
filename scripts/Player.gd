@@ -1,6 +1,8 @@
 extends CharacterBody3D
 @onready var parea = $Area3D
 @onready var head = $Head
+@onready var pivot = $Pivot
+@onready var cameras = [pivot, head]
 @onready var standing_collision_shape = $standing_CollisionShape3D
 @onready var crouching_collision_shape = $crouching_CollisionShape3D
 @onready var ray_cast_3d = $RayCast3D
@@ -38,10 +40,12 @@ var cam_dir = Vector2.ZERO
 
 
 func _input(event):
+	head = cameras[PlayerVariables.fpcam]
 	#print(event)
 	# Camera (mouse)
 	if event is InputEventMouseMotion:
-		rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
+		if PlayerVariables.fpcam: rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
+		else: head.rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
 		head.rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
 		if not PlayerVariables.underwater:
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(90))
@@ -54,10 +58,12 @@ func _input(event):
 		
 
 func _ready():
+	head = cameras[PlayerVariables.fpcam]
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
 func _process(delta):
+	head = cameras[PlayerVariables.fpcam]
 	# Camera (joystick)
 	cam_dir = Input.get_vector("cam-l", "cam-r", "cam-u", "cam-d")
 	if (cam_dir.length() > 0):
@@ -69,6 +75,7 @@ func _process(delta):
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
 
 func _physics_process(delta):
+	head = cameras[PlayerVariables.fpcam]
 	# Crouching and Sprinting
 	if Input.is_action_pressed("move_down") and not PlayerVariables.underwater: # Crouching
 		current_speed = crouching_speed
