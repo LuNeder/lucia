@@ -53,8 +53,8 @@ func _input(event):
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(90))
 		else:
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
-	# Camera Person set
-	if (event is InputEventKey) and (Input.is_action_just_pressed("cam-chg")):
+	# Camera Person set # TODO: fix nonstop change
+	if ((event is InputEventKey) or (event is InputEventJoypadButton) ) and (Input.is_action_just_pressed("cam-chg")):
 		PlayerVariables.fpcam = abs(PlayerVariables.fpcam - 1)
 		print(PlayerVariables.fpcam)
 		
