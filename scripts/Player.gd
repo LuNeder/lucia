@@ -121,11 +121,11 @@ func _physics_process(delta):
 		
 	if PlayerVariables.underwater and not previous_uw:
 		rotation.x = (-deg_to_rad(90))
-		head.rotation.x = deg_to_rad(90)
+		head.rotation.x = head.rotation.x+deg_to_rad(90)
 	elif previous_uw and not PlayerVariables.underwater: 
 		rotation.x = 0
 		rotation.z = 0
-		head.rotation.x = 0
+		head.rotation.x = head.rotation.x - deg_to_rad(90)
 		if Input.is_action_pressed("move_up") or Input.is_action_pressed("move_forward"):
 			target_velocity.y = jump_impulse
 
