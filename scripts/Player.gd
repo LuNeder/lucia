@@ -31,23 +31,38 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")*10
 
 var target_velocity = Vector3.ZERO
 var direction = Vector3.ZERO
+var cam_dir = Vector2.ZERO
 @export var mouse_sens = 0.4
+@export var joycam_sens = 5
 @export var lerp_speed = 10 
 
 
 func _input(event):
-	if event is InputEventMouseMotion: # TODO: vixsogame controller
+	# Camera (mouse)
+	if event is InputEventMouseMotion:
 		rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
 		head.rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
 		if not PlayerVariables.underwater:
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(90))
 		else:
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
+		
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _physics_process(delta):
+	# Camera (joystick)
+	cam_dir = Input.get_vector("cam-l", "cam-r", "cam-u", "cam-d")
+	if (cam_dir.length() > 0):
+		print("aq")
+		rotate_y(-deg_to_rad(cam_dir.x * mouse_sens*joycam_sens))
+		head.rotate_x(-deg_to_rad(cam_dir.y * mouse_sens*joycam_sens))
+		if not PlayerVariables.underwater:
+			head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(90))
+		else:
+			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
+		
 	# Crouching and Sprinting
 	if Input.is_action_pressed("move_down") and not PlayerVariables.underwater: # Crouching
 		current_speed = crouching_speed
@@ -130,11 +145,11 @@ func _physics_process(delta):
 			target_velocity.y = jump_impulse
 
 	# testing
-	print('underwater ' + str(PlayerVariables.underwater))
+	#print('underwater ' + str(PlayerVariables.underwater))
 	# print(str(parea.get_overlapping_areas())) # This detects the areas!!
-	print(current_speed)
-	print(input_dir)
-	print(input_dir.length())
+	#print(current_speed)
+	#print(input_dir)
+	#print(input_dir.length())
 	
 	ocean.position.x = self.position.x;
 	ocean.position.z = self.position.z;
