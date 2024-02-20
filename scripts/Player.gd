@@ -56,7 +56,8 @@ func _input(event):
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
-func _physics_process(delta):
+
+func _process(delta):
 	# Camera (joystick)
 	cam_dir = Input.get_vector("cam-l", "cam-r", "cam-u", "cam-d")
 	if (cam_dir.length() > 0):
@@ -66,7 +67,8 @@ func _physics_process(delta):
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(90))
 		else:
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
-		
+
+func _physics_process(delta):
 	# Crouching and Sprinting
 	if Input.is_action_pressed("move_down") and not PlayerVariables.underwater: # Crouching
 		current_speed = crouching_speed

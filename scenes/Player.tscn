@@ -25,13 +25,15 @@ script = ExtResource("1_47355")
 [node name="Head" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82, 0)
 
+[node name="tpc-Camera3D" type="Camera3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 0.887204, 0.461377, 0, -0.461377, 0.887204, 0, 0.861973, 2.29162)
+
 [node name="Camera3D" type="Camera3D" parent="Head"]
 
-[node name="Pivot" type="Node3D" parent="."]
-
-[node name="Character" type="MeshInstance3D" parent="Pivot"]
+[node name="Character" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_vkh2m")
-skeleton = NodePath("../..")
+
+[node name="Pivot" type="Node3D" parent="."]
 
 [node name="standing_CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_caoc6")
