@@ -1,12 +1,15 @@
 extends CharacterBody3D
 @onready var parea = $Area3D
 @onready var head = $Head
-@onready var pivot = $Pivot
-@onready var cameras = [pivot, head]
+#@onready var pivot = $Pivot
+#@onready var cameras = [pivot, head]
 @onready var standing_collision_shape = $standing_CollisionShape3D
 @onready var crouching_collision_shape = $crouching_CollisionShape3D
 @onready var ray_cast_3d = $RayCast3D
 @onready var ocean = $"/root/Node3D//Ocean"
+@onready var tpcam = $Pivot/Pivot_v/tpcCamera3D
+@onready var cpivot_v = $Pivot/Pivot_v
+@onready var cpivot_h = $Pivot
 
 var sprinting = false
 var previous_uw = true
@@ -40,35 +43,34 @@ var cam_dir = Vector2.ZERO
 
 
 func _input(event):
-	head = cameras[PlayerVariables.fpcam]
+#	head = cameras[PlayerVariables.fpcam]
 	#print(event)
 	# Camera (mouse)
-	if event is InputEventMouseMotion:
-		if PlayerVariables.fpcam: rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
-		else: head.rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
+	if event is InputEventMouseMotion and PlayerVariables.fpcam:
+		rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
 		head.rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
 		if not PlayerVariables.underwater:
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(90))
 		else:
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
 	# Camera Person set
-	if (event is InputEventKey) and (Input.is_action_pressed("cam-chg")):
+	if (event is InputEventKey) and (Input.is_action_just_pressed("cam-chg")):
 		PlayerVariables.fpcam = abs(PlayerVariables.fpcam - 1)
 		print(PlayerVariables.fpcam)
 		
 
 func _ready():
-	head = cameras[PlayerVariables.fpcam]
+#	head = cameras[PlayerVariables.fpcam]
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
 func _process(delta):
-	head = cameras[PlayerVariables.fpcam]
-	$Pivot/tpcCamera3D.current = !PlayerVariables.fpcam #disables/enables 3rd person camera
+#	head = cameras[PlayerVariables.fpcam]
+	tpcam.current = !PlayerVariables.fpcam #disables/enables 3rd person camera
 		
 	# Camera (joystick)
 	cam_dir = Input.get_vector("cam-l", "cam-r", "cam-u", "cam-d")
-	if (cam_dir.length() > 0):
+	if (cam_dir.length() > 0) and PlayerVariables.fpcam:
 		rotate_y(-deg_to_rad(cam_dir.x * mouse_sens*joycam_sens))
 		head.rotate_x(-deg_to_rad(cam_dir.y * mouse_sens*joycam_sens))
 		if not PlayerVariables.underwater:
@@ -77,7 +79,7 @@ func _process(delta):
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
 
 func _physics_process(delta):
-	head = cameras[PlayerVariables.fpcam]
+#	head = cameras[PlayerVariables.fpcam]
 	# Crouching and Sprinting
 	if Input.is_action_pressed("move_down") and not PlayerVariables.underwater: # Crouching
 		current_speed = crouching_speed
@@ -151,11 +153,21 @@ func _physics_process(delta):
 		
 	if PlayerVariables.underwater and not previous_uw:
 		rotation.x = (-deg_to_rad(90))
-		head.rotation.x = head.rotation.x+deg_to_rad(90)
+		if PlayerVariables.fpcam:
+			head.rotation.x = head.rotation.x+deg_to_rad(90)
+		else:
+			cpivot_v.rotation.x = cpivot_v.rotation.x+deg_to_rad(90)
+			cpivot_h.rotation.z = cpivot_h.rotation.y
+			cpivot_h.rotation.y = 0
 	elif previous_uw and not PlayerVariables.underwater: 
 		rotation.x = 0
 		rotation.z = 0
-		head.rotation.x = head.rotation.x - deg_to_rad(90)
+		if PlayerVariables.fpcam:
+			head.rotation.x = head.rotation.x - deg_to_rad(90)
+		else:
+			cpivot_v.rotation.x = cpivot_v.rotation.x - deg_to_rad(90)
+			cpivot_h.rotation.y = cpivot_h.rotation.z
+			cpivot_h.rotation.z = 0
 		if Input.is_action_pressed("move_up") or Input.is_action_pressed("move_forward"):
 			target_velocity.y = jump_impulse
 
