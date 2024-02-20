@@ -3,6 +3,7 @@
 [ext_resource type="Shader" path="res://shaders/Water-ocean.gdshader" id="1_kbplt"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ag74k"]
+lightmap_size_hint = Vector2i(52, 52)
 size = Vector2(10.05, 10.05)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_21cs4"]

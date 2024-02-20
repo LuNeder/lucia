@@ -4,7 +4,7 @@ extends CharacterBody3D
 @onready var standing_collision_shape = $standing_CollisionShape3D
 @onready var crouching_collision_shape = $crouching_CollisionShape3D
 @onready var ray_cast_3d = $RayCast3D
-@onready var ocean = $"../Ocean"
+@onready var ocean = $"/root/Node3D//Ocean"
 
 var sprinting = false
 var previous_uw = true
@@ -55,7 +55,6 @@ func _physics_process(delta):
 	# Camera (joystick)
 	cam_dir = Input.get_vector("cam-l", "cam-r", "cam-u", "cam-d")
 	if (cam_dir.length() > 0):
-		print("aq")
 		rotate_y(-deg_to_rad(cam_dir.x * mouse_sens*joycam_sens))
 		head.rotate_x(-deg_to_rad(cam_dir.y * mouse_sens*joycam_sens))
 		if not PlayerVariables.underwater:

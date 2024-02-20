@@ -37,47 +37,26 @@ textures = [[ExtResource("7_bm0b5")], [ExtResource("8_lb6pl")]]
 
 [node name="Node3D" type="Node3D"]
 
-[node name="env" type="Node3D" parent="."]
+[node name="Ocean" parent="." instance=ExtResource("14_m6b30")]
+transform = Transform3D(40, 0, 0, 0, 1, 0, 0, 0, 40, 0, 0, 0)
 
-[node name="Sun" type="DirectionalLight3D" parent="env"]
+[node name="world" type="Node3D" parent="."]
+transform = Transform3D(40, 0, 0, 0, 1, 0, 0, 0, 40, 0, 0, 0)
+
+[node name="env" type="Node3D" parent="world"]
+transform = Transform3D(0.025, 0, 0, 0, 1, 0, 0, 0, 0.025, 0, 0, 0)
+
+[node name="Sun" type="DirectionalLight3D" parent="world/env"]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
 shadow_enabled = true
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="env"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="world/env"]
 environment = SubResource("Environment_5piuq")
 
-[node name="WaterArea2" parent="." instance=ExtResource("10_l6fg5")]
-transform = Transform3D(16.16, 0, 0, 0, 16.16, 0, 0, 0, 16.16, 15.0229, 4.10097, 223.601)
-
-[node name="WaterArea" parent="." instance=ExtResource("10_l6fg5")]
-transform = Transform3D(14.81, 0, 0, 0, 14.81, 0, 0, 0, 14.81, 25.1757, -4.15978, 241.401)
-
-[node name="AirArea2" parent="." instance=ExtResource("1_mauf7")]
-transform = Transform3D(15.05, 0, 0, 0, 15.05, 0, 0, 0, 15.05, 67.1697, -11.9436, 188.755)
-
-[node name="AirArea" parent="." instance=ExtResource("1_mauf7")]
-transform = Transform3D(4.94, 0, 0, 0, 4.94, 0, 0, 0, 4.94, 81.7794, -8.82637, 208.427)
-
-[node name="Sprite3D" type="Sprite3D" parent="."]
-
-[node name="Sprite3D2" type="Sprite3D" parent="."]
-transform = Transform3D(0.553653, 0, 0.832747, 0, 1, 0, -0.832747, 0, 0.553653, -61.4952, 5.38471, 14.7175)
-shaded = true
-texture = ExtResource("1_eblid")
-script = ExtResource("2_33y0t")
-
-[node name="SpotLight3D" type="SpotLight3D" parent="."]
-transform = Transform3D(0.997311, 0.0732904, -1.85764e-09, -0.0688143, 0.936401, 0.344119, 0.0252206, -0.343193, 0.938926, 0.664758, 0.865241, 1.9598)
-light_color = Color(0.215686, 0.745098, 0.717647, 1)
-light_energy = 2.496
-light_size = 0.283
-shadow_enabled = true
-spot_range = 5.99778
-spot_angle = 25.5539
-script = ExtResource("3_oa4x0")
-
-[node name="HTerrain" type="Node3D" parent="."]
+[node name="HTerrain" type="Node3D" parent="world"]
+transform = Transform3D(0.025, 0, 0, 0, 1, 0, 0, 0, 0.025, 0, 0, 0)
 script = ExtResource("4_ql21x")
+ambient_wind = 0.229
 map_scale = Vector3(5, 5, 5)
 _terrain_data = ExtResource("5_i1oot")
 chunk_size = 64
@@ -95,6 +74,37 @@ shader_params/u_depth_blending = true
 shader_params/u_globalmap_blend_start = null
 shader_params/u_globalmap_blend_distance = null
 shader_params/u_tile_reduction = null
+
+[node name="water-air" type="Node3D" parent="world"]
+transform = Transform3D(0.025, 0, 0, 0, 1, 0, 0, 0, 0.025, 0, 0, 0)
+
+[node name="WaterArea2" parent="world/water-air" instance=ExtResource("10_l6fg5")]
+transform = Transform3D(16.16, 0, 0, 0, 16.16, 0, 0, 0, 16.16, 15.0229, 4.10097, 223.601)
+
+[node name="WaterArea" parent="world/water-air" instance=ExtResource("10_l6fg5")]
+transform = Transform3D(14.81, 0, 0, 0, 14.81, 0, 0, 0, 14.81, 25.1757, -4.15978, 241.401)
+
+[node name="AirArea2" parent="world/water-air" instance=ExtResource("1_mauf7")]
+transform = Transform3D(15.05, 0, 0, 0, 15.05, 0, 0, 0, 15.05, 67.1697, -11.9436, 188.755)
+
+[node name="AirArea" parent="world/water-air" instance=ExtResource("1_mauf7")]
+transform = Transform3D(4.94, 0, 0, 0, 4.94, 0, 0, 0, 4.94, 81.7794, -8.82637, 208.427)
+
+[node name="Sprite3D2" type="Sprite3D" parent="."]
+transform = Transform3D(0.553653, 0, 0.832747, 0, 1, 0, -0.832747, 0, 0.553653, -61.4952, 5.38471, 14.7175)
+shaded = true
+texture = ExtResource("1_eblid")
+script = ExtResource("2_33y0t")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(0.997311, 0.0732904, -1.85764e-09, -0.0688143, 0.936401, 0.344119, 0.0252206, -0.343193, 0.938926, 0.664758, 0.865241, 1.9598)
+light_color = Color(0.215686, 0.745098, 0.717647, 1)
+light_energy = 2.496
+light_size = 0.283
+shadow_enabled = true
+spot_range = 5.99778
+spot_angle = 25.5539
+script = ExtResource("3_oa4x0")
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="."]
 anchors_preset = -1
@@ -138,9 +148,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.4845, 3.6569, 251.926)
 use_collision = true
 collision_layer = 5
 size = Vector3(9.67664, 0.592651, 9.64205)
-
-[node name="Ocean" parent="." instance=ExtResource("14_m6b30")]
-transform = Transform3D(40, 0, 0, 0, 1, 0, 0, 0, 40, 0, 0, 0)
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.295, 5.5284, 251.926)
