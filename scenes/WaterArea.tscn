@@ -5,8 +5,7 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yv4u6"]
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_0xllo"]
-size = Vector2(1, 1)
+[sub_resource type="BoxMesh" id="BoxMesh_3ixfx"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mmme2"]
 render_priority = 0
@@ -40,5 +39,5 @@ shape = SubResource("BoxShape3D_yv4u6")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0129901, -0.01456, -0.0472111)
 layers = 9
-mesh = SubResource("PlaneMesh_0xllo")
+mesh = SubResource("BoxMesh_3ixfx")
 surface_material_override/0 = SubResource("ShaderMaterial_mmme2")
