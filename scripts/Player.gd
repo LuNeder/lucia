@@ -64,6 +64,8 @@ func _ready():
 
 func _process(delta):
 	head = cameras[PlayerVariables.fpcam]
+	$Pivot/tpcCamera3D.current = !PlayerVariables.fpcam #disables/enables 3rd person camera
+		
 	# Camera (joystick)
 	cam_dir = Input.get_vector("cam-l", "cam-r", "cam-u", "cam-d")
 	if (cam_dir.length() > 0):
