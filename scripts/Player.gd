@@ -36,7 +36,7 @@ var direction = Vector3.ZERO
 
 
 func _input(event):
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion: # TODO: vixsogame controller
 		rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
 		head.rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
 		if not PlayerVariables.underwater:

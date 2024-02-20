@@ -4,6 +4,8 @@
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ag74k"]
 size = Vector2(10.05, 10.05)
+subdivide_width = 10
+subdivide_depth = 10
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_21cs4"]
 noise_type = 3
@@ -32,6 +34,7 @@ noise = SubResource("FastNoiseLite_543rq")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_kub38"]
 noise_type = 4
+frequency = 0.0001
 fractal_type = 2
 fractal_gain = 0.34
 fractal_weighted_strength = 0.6
@@ -42,7 +45,7 @@ noise = SubResource("FastNoiseLite_kub38")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_a5p56"]
 noise_type = 4
-frequency = 0.0439
+frequency = 0.0112
 fractal_gain = 0.34
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_sbrqa"]
@@ -59,10 +62,10 @@ shader_parameter/metallic = 0.0
 shader_parameter/roughness = 0.177
 shader_parameter/wave_direction = Vector2(0.5, -0.2)
 shader_parameter/wave_direction2 = Vector2(-0.5, 0.5)
-shader_parameter/time_scale = 0.2
+shader_parameter/time_scale = 0.1
 shader_parameter/noise_scale = 20.0
 shader_parameter/height_scale = 2.0
-shader_parameter/color_deep = Color(0.11, 0.29, 0.33, 1)
+shader_parameter/color_deep = Color(0.109804, 0.290196, 0.329412, 1)
 shader_parameter/color_shallow = Color(0, 0.47, 0.76, 1)
 shader_parameter/beers_law = 2.0
 shader_parameter/depth_offset = 1.5

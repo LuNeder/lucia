@@ -30,7 +30,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82, 0)
 [node name="Pivot" type="Node3D" parent="."]
 
 [node name="Character" type="MeshInstance3D" parent="Pivot"]
-visible = false
 mesh = SubResource("CapsuleMesh_vkh2m")
 skeleton = NodePath("../..")
 
