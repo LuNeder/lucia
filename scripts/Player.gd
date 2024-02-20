@@ -38,6 +38,7 @@ var cam_dir = Vector2.ZERO
 
 
 func _input(event):
+	#print(event)
 	# Camera (mouse)
 	if event is InputEventMouseMotion:
 		rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
@@ -46,6 +47,10 @@ func _input(event):
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(90))
 		else:
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
+	# Camera Person set
+	if (event is InputEventKey) and (Input.is_action_pressed("cam-chg")):
+		PlayerVariables.fpcam = abs(PlayerVariables.fpcam - 1)
+		print(PlayerVariables.fpcam)
 		
 
 func _ready():
