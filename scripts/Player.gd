@@ -100,8 +100,8 @@ func _physics_process(delta):
 		
 	# We check for each move input and update the direction accordingly.
 	if direction:
-		target_velocity.x = direction.x * current_speed
-		target_velocity.z = direction.z * current_speed
+		target_velocity.x = direction.x * current_speed * input_dir.length()
+		target_velocity.z = direction.z * current_speed * input_dir.length()
 		if PlayerVariables.underwater and (not Input.is_action_pressed("move_up")) and (not Input.is_action_pressed("move_down")):
 			target_velocity.y = direction.y * current_speed
 	else:
@@ -133,6 +133,8 @@ func _physics_process(delta):
 	print('underwater ' + str(PlayerVariables.underwater))
 	# print(str(parea.get_overlapping_areas())) # This detects the areas!!
 	print(current_speed)
+	print(input_dir)
+	print(input_dir.length())
 	
 	ocean.position.x = self.position.x;
 	ocean.position.z = self.position.z;
