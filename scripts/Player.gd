@@ -1,8 +1,6 @@
 extends CharacterBody3D
 @onready var parea = $Area3D
 @onready var head = $skin/Head
-#@onready var pivot = $Pivot
-#@onready var cameras = [pivot, head]
 @onready var standing_collision_shape = $standing_CollisionShape3D
 @onready var crouching_collision_shape = $crouching_CollisionShape3D
 @onready var ray_cast_3d = $RayCast3D
@@ -45,8 +43,6 @@ var cam_dir = Vector2.ZERO
 
 
 func _input(event):
-#	head = cameras[PlayerVariables.fpcam]
-	#print(event)
 	# Camera (mouse)
 	if event is InputEventMouseMotion and PlayerVariables.fpcam:
 		rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
@@ -56,7 +52,7 @@ func _input(event):
 		else:
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
 	
-	# 3rd person Camera (mouse)
+	# 3rd person Camera (mouse) # TODO: Joystick
 	if event is InputEventMouseMotion and !PlayerVariables.fpcam:
 		rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
 		
@@ -71,24 +67,18 @@ func _input(event):
 		else:
 			cpivot_v.rotation.x = clamp(cpivot_v.rotation.x, deg_to_rad(20), deg_to_rad(175)) # looping for some reason
 			
-	# Camera Person set # TODO: fix nonstop change
+	# Camera Person set
 	if ((event is InputEventKey) or (event is InputEventJoypadButton) ) and (Input.is_action_just_pressed("cam-chg")):
 		PlayerVariables.fpcam = abs(PlayerVariables.fpcam - 1)
 		print(PlayerVariables.fpcam)
 
 
 func _ready():
-#	head = cameras[PlayerVariables.fpcam]
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
 func _process(delta):
-#	head = cameras[PlayerVariables.fpcam]
-	tpcam.current = !PlayerVariables.fpcam #disables/enables 3rd person camera
-	# 3rd person camera rotate player # TODO
-#	if !PlayerVariables.fpcam and Input.is_action_pressed("move_forward"):
-#		rotation.y = cpivot_h.rotation.y #lerp(rotation.y, cpivot_h.rotation.y, lerp_speed) #not working
-		
+	tpcam.current = !PlayerVariables.fpcam #disables/enables 3rd person camera	
 	# Camera (joystick)
 	cam_dir = Input.get_vector("cam-l", "cam-r", "cam-u", "cam-d")
 	if (cam_dir.length() > 0) and PlayerVariables.fpcam:
@@ -100,7 +90,6 @@ func _process(delta):
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
 
 func _physics_process(delta):
-#	head = cameras[PlayerVariables.fpcam]
 	# Crouching and Sprinting
 	if Input.is_action_pressed("move_down") and not PlayerVariables.underwater: # Crouching
 		current_speed = crouching_speed
@@ -160,7 +149,7 @@ func _physics_process(delta):
 		if (not PlayerVariables.underwater) and (not PlayerVariables.fpcam):
 			skin.look_at(position + direction) #lerp(position, position + direction, lerp_speed/10)
 		elif (not PlayerVariables.fpcam) and input_dir:
-			skin.rotation = cpivot_v.rotation - Vector3(90, 0, 0)
+			skin.rotation = cpivot_v.rotation - Vector3(90, 0, 0) # TODO: this looks weird
 			
 			
 		if PlayerVariables.underwater and (not Input.is_action_pressed("move_up")) and (not Input.is_action_pressed("move_down")):
