@@ -7,5 +7,9 @@ script = ExtResource("1_6mdhw")
 
 [node name="Pivot_v" type="Node3D" parent="."]
 
-[node name="tpcCamera3D" type="Camera3D" parent="Pivot_v"]
-transform = Transform3D(1, 0, 0, 0, 0.865003, 0.501767, 0, -0.501767, 0.865003, 0, 1.0275, 2.292)
+[node name="spring" type="SpringArm3D" parent="Pivot_v"]
+transform = Transform3D(1, 0, 0, 0, 0.902901, 0.429849, 0, -0.429849, 0.902901, 0, 0, 0)
+spring_length = 2.24
+
+[node name="tpcCamera3D" type="Camera3D" parent="Pivot_v/spring"]
+transform = Transform3D(1, 0, 0, 0, 0.996696, 0.0812247, 0, -0.0812247, 0.996696, 0, 0.0432019, 2.23565)

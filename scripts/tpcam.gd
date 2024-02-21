@@ -5,16 +5,7 @@ var joycam_sens = 5
 var cam_dir = Vector2.ZERO
 
 func _input(event):
-	# 3rd person Camera (mouse)
-	if event is InputEventMouseMotion and !PlayerVariables.fpcam:
-		if not PlayerVariables.underwater: rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
-		else: rotate_z(-deg_to_rad(event.relative.x * mouse_sens))
-		pivot_v.rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
-		
-		if not PlayerVariables.underwater:
-			pivot_v.rotation.x = clamp(pivot_v.rotation.x, deg_to_rad(-89), deg_to_rad(90))
-		else:
-			pivot_v.rotation.x = clamp(pivot_v.rotation.x, deg_to_rad(20), deg_to_rad(175)) # looping for some reason
+	pass
 			
 
 		

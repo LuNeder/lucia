@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://cc83u4jeon8cv"]
 
 [ext_resource type="Script" path="res://scripts/Player.gd" id="1_47355"]
-[ext_resource type="PackedScene" uid="uid://iuuxfr6bahpi" path="res://scenes/tpcam.tscn" id="2_l5sfd"]
+[ext_resource type="Script" path="res://scripts/tpcam.gd" id="2_x851y"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_8v8b7"]
 radius = 0.25
@@ -34,29 +34,43 @@ floor_constant_speed = true
 floor_max_angle = 1.54811
 script = ExtResource("1_47355")
 
-[node name="Head" type="Node3D" parent="."]
+[node name="skin" type="Node3D" parent="."]
+
+[node name="Head" type="Node3D" parent="skin"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82, 0)
 
-[node name="head" type="MeshInstance3D" parent="Head"]
+[node name="head" type="MeshInstance3D" parent="skin/Head"]
 mesh = SubResource("SphereMesh_8v8b7")
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="nose" type="MeshInstance3D" parent="Head"]
+[node name="nose" type="MeshInstance3D" parent="skin/Head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0269934, -0.281212)
 layers = 64
 mesh = SubResource("CapsuleMesh_f1awq")
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="Camera3D" type="Camera3D" parent="Head"]
+[node name="Camera3D" type="Camera3D" parent="skin/Head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.192838, 0)
 cull_mask = 1048511
+current = true
 
-[node name="Pivot" parent="." instance=ExtResource("2_l5sfd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.839404, 0)
-
-[node name="Character" type="MeshInstance3D" parent="."]
+[node name="Character" type="MeshInstance3D" parent="skin"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
 mesh = SubResource("CapsuleMesh_p2ohb")
+skeleton = NodePath("../..")
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.461358, 0)
+script = ExtResource("2_x851y")
+
+[node name="Pivot_v" type="Node3D" parent="Pivot"]
+
+[node name="spring" type="SpringArm3D" parent="Pivot/Pivot_v"]
+transform = Transform3D(1, 0, 0, 0, 0.902901, 0.429849, 0, -0.429849, 0.902901, 0, 0, 0)
+spring_length = 2.24
+
+[node name="tpcCamera3D" type="Camera3D" parent="Pivot/Pivot_v/spring"]
+transform = Transform3D(1, 0, 0, 0, 0.996696, 0.0812247, 0, -0.0812247, 0.996696, 0, 0.0432019, 2.23565)
 
 [node name="standing_CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_caoc6")

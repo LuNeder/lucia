@@ -1,15 +1,16 @@
 extends CharacterBody3D
 @onready var parea = $Area3D
-@onready var head = $Head
+@onready var head = $skin/Head
 #@onready var pivot = $Pivot
 #@onready var cameras = [pivot, head]
 @onready var standing_collision_shape = $standing_CollisionShape3D
 @onready var crouching_collision_shape = $crouching_CollisionShape3D
 @onready var ray_cast_3d = $RayCast3D
 @onready var ocean = $"/root/Node3D//Ocean"
-@onready var tpcam = $Pivot/Pivot_v/tpcCamera3D
+@onready var tpcam = $Pivot/Pivot_v/spring/tpcCamera3D
 @onready var cpivot_v = $Pivot/Pivot_v
 @onready var cpivot_h = $Pivot
+@onready var skin = $skin
 
 var sprinting = false
 var previous_uw = true
@@ -20,7 +21,8 @@ var rotTf = 0
 var pVec = Vector3.ZERO
 var pVec1 = Vector3.ZERO
 var pVec2 = Vector3.ZERO
-
+var heads = []
+var heady = head 
 
 # Speeds in meters per second.
 @export var current_speed = 7
@@ -53,6 +55,22 @@ func _input(event):
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(90))
 		else:
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
+	
+	# 3rd person Camera (mouse)
+	if event is InputEventMouseMotion and !PlayerVariables.fpcam:
+		rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
+		
+		if PlayerVariables.underwater:
+			skin.rotate_z(deg_to_rad(event.relative.x * mouse_sens))
+		else:
+			skin.rotate_y(deg_to_rad(event.relative.x * mouse_sens))
+		cpivot_v.rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
+		
+		if not PlayerVariables.underwater:
+			cpivot_v.rotation.x = clamp(cpivot_v.rotation.x, deg_to_rad(-89), deg_to_rad(90))
+		else:
+			cpivot_v.rotation.x = clamp(cpivot_v.rotation.x, deg_to_rad(20), deg_to_rad(175)) # looping for some reason
+			
 	# Camera Person set # TODO: fix nonstop change
 	if ((event is InputEventKey) or (event is InputEventJoypadButton) ) and (Input.is_action_just_pressed("cam-chg")):
 		PlayerVariables.fpcam = abs(PlayerVariables.fpcam - 1)
@@ -68,8 +86,8 @@ func _process(delta):
 #	head = cameras[PlayerVariables.fpcam]
 	tpcam.current = !PlayerVariables.fpcam #disables/enables 3rd person camera
 	# 3rd person camera rotate player # TODO
-	if !PlayerVariables.fpcam and Input.is_action_pressed("move_forward"):
-		rotation.y = cpivot_h.rotation.y #lerp(rotation.y, cpivot_h.rotation.y, lerp_speed) #not working
+#	if !PlayerVariables.fpcam and Input.is_action_pressed("move_forward"):
+#		rotation.y = cpivot_h.rotation.y #lerp(rotation.y, cpivot_h.rotation.y, lerp_speed) #not working
 		
 	# Camera (joystick)
 	cam_dir = Input.get_vector("cam-l", "cam-r", "cam-u", "cam-d")
@@ -116,29 +134,39 @@ func _physics_process(delta):
 		if input_dir == Vector2.ZERO and (not Input.is_action_pressed("move_up")) and (not Input.is_action_pressed("move_down")):
 			direction = lerp(direction, Vector3.ZERO, delta*lerp_speed*0.25)
 			target_velocity.y = lerp(target_velocity.y, 0.0, delta*lerp_speed*0.25)
-		# up-down
+		# uw-up-down
 		if Input.is_action_pressed("move_up"):
 			target_velocity.y = current_speed
 		if Input.is_action_pressed("move_down"):
 			target_velocity.y = - current_speed
 		
-		# wasd
+		# uw-wasd
+		heads = [cpivot_v, head]
+		heady = heads[PlayerVariables.fpcam] # 0 for 3rd person, 1 for 1st person
 		if Input.is_action_pressed("move_forward"):
-			direction = lerp(direction, ((- head.global_transform.basis.z.normalized()).normalized()), delta*lerp_speed)
+			direction = lerp(direction, ((- heady.global_transform.basis.z.normalized()).normalized()), delta*lerp_speed)
 		if Input.is_action_pressed("move_back"):
-			direction  = lerp(direction, ((head.global_transform.basis.z.normalized()).normalized()), delta*lerp_speed)
+			direction  = lerp(direction, ((heady.global_transform.basis.z.normalized()).normalized()), delta*lerp_speed)
 		if Input.is_action_pressed("move_left"):
-			direction = lerp(direction, ((- head.global_transform.basis.x.normalized()).normalized()), delta*lerp_speed)
+			direction = lerp(direction, ((- heady.global_transform.basis.x.normalized()).normalized()), delta*lerp_speed)
 		if Input.is_action_pressed("move_right"):
-			direction = lerp(direction, ((head.global_transform.basis.x.normalized()).normalized()), delta*lerp_speed)
+			direction = lerp(direction, ((heady.global_transform.basis.x.normalized()).normalized()), delta*lerp_speed)
 		
 		
 	# We check for each move input and update the direction accordingly.
 	if direction:
 		target_velocity.x = direction.x * current_speed * input_dir.length()
 		target_velocity.z = direction.z * current_speed * input_dir.length()
+		if (not PlayerVariables.underwater) and (not PlayerVariables.fpcam):
+			skin.look_at(position + direction) #lerp(position, position + direction, lerp_speed/10)
+		elif (not PlayerVariables.fpcam) and input_dir:
+			skin.rotation = cpivot_v.rotation - Vector3(90, 0, 0)
+			
+			
 		if PlayerVariables.underwater and (not Input.is_action_pressed("move_up")) and (not Input.is_action_pressed("move_down")):
 			target_velocity.y = direction.y * current_speed
+		else:
+			pass
 	else:
 		target_velocity.x = move_toward(velocity.x, 0, current_speed)
 		target_velocity.z = move_toward(velocity.z, 0, current_speed)	
