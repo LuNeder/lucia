@@ -57,7 +57,7 @@ func _input(event):
 	if ((event is InputEventKey) or (event is InputEventJoypadButton) ) and (Input.is_action_just_pressed("cam-chg")):
 		PlayerVariables.fpcam = abs(PlayerVariables.fpcam - 1)
 		print(PlayerVariables.fpcam)
-		
+
 
 func _ready():
 #	head = cameras[PlayerVariables.fpcam]
@@ -67,6 +67,9 @@ func _ready():
 func _process(delta):
 #	head = cameras[PlayerVariables.fpcam]
 	tpcam.current = !PlayerVariables.fpcam #disables/enables 3rd person camera
+	# 3rd person camera rotate player # TODO
+	if !PlayerVariables.fpcam and Input.is_action_pressed("move_forward"):
+		rotation.y = cpivot_h.rotation.y #lerp(rotation.y, cpivot_h.rotation.y, lerp_speed) #not working
 		
 	# Camera (joystick)
 	cam_dir = Input.get_vector("cam-l", "cam-r", "cam-u", "cam-d")
@@ -170,6 +173,8 @@ func _physics_process(delta):
 			cpivot_h.rotation.z = 0
 		if Input.is_action_pressed("move_up") or Input.is_action_pressed("move_forward"):
 			target_velocity.y = jump_impulse
+			
+
 
 	# testing
 	#print('underwater ' + str(PlayerVariables.underwater))
