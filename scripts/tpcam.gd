@@ -16,10 +16,7 @@ func _input(event):
 		else:
 			pivot_v.rotation.x = clamp(pivot_v.rotation.x, deg_to_rad(20), deg_to_rad(175)) # looping for some reason
 			
-	# Camera Person set
-	if (event is InputEventKey) and (Input.is_action_pressed("cam-chg")):
-		PlayerVariables.fpcam = abs(PlayerVariables.fpcam - 1)
-		print(PlayerVariables.fpcam)
+
 		
 func _process(delta):		
 	# 3rd person Camera (joystick)
