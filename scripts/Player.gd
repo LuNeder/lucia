@@ -52,7 +52,7 @@ func _input(event):
 		else:
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
 	
-	# 3rd person Camera (mouse) # TODO: Joystick
+	# 3rd person Camera (mouse)
 	if event is InputEventMouseMotion and !PlayerVariables.fpcam:
 		rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
 		
@@ -65,7 +65,7 @@ func _input(event):
 		if not PlayerVariables.underwater:
 			cpivot_v.rotation.x = clamp(cpivot_v.rotation.x, deg_to_rad(-89), deg_to_rad(90))
 		else:
-			cpivot_v.rotation.x = clamp(cpivot_v.rotation.x, deg_to_rad(20), deg_to_rad(175)) # looping for some reason
+			cpivot_v.rotation.x = clamp(cpivot_v.rotation.x, deg_to_rad(20), deg_to_rad(175)) # TODO: looping for some reason
 			
 	# Camera Person set
 	if ((event is InputEventKey) or (event is InputEventJoypadButton) ) and (Input.is_action_just_pressed("cam-chg")):
@@ -88,6 +88,21 @@ func _process(delta):
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(90))
 		else:
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
+
+	# 3rd Person Camera (joystick) # TODO: see if this actually works
+	elif cam_dir.length() > 0:
+		rotate_y(-deg_to_rad(cam_dir.x * mouse_sens*joycam_sens))
+		
+		if PlayerVariables.underwater:
+			skin.rotate_z(deg_to_rad(cam_dir.x * mouse_sens*joycam_sens))
+		else:
+			skin.rotate_y(deg_to_rad(cam_dir.x * mouse_sens*joycam_sens))
+		cpivot_v.rotate_x(-deg_to_rad(cam_dir.y * mouse_sens*joycam_sens))
+		
+		if not PlayerVariables.underwater:
+			cpivot_v.rotation.x = clamp(cpivot_v.rotation.x, deg_to_rad(-89), deg_to_rad(90))
+		else:
+			cpivot_v.rotation.x = clamp(cpivot_v.rotation.x, deg_to_rad(20), deg_to_rad(175)) # TODO: looping for some reason
 
 func _physics_process(delta):
 	# Crouching and Sprinting
