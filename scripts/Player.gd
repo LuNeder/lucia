@@ -37,6 +37,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")*10
 var target_velocity = Vector3.ZERO
 var direction = Vector3.ZERO
 var cam_dir = Vector2.ZERO
+var camdir_prev = Vector2.ZERO
 @export var mouse_sens = 0.4
 @export var joycam_sens = 5
 @export var lerp_speed = 10 
@@ -54,13 +55,12 @@ func _input(event):
 	
 	# 3rd person Camera (mouse)
 	if event is InputEventMouseMotion and !PlayerVariables.fpcam:
-		print(event.relative)
 		rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
 		if PlayerVariables.underwater:
 			skin.rotate_z(deg_to_rad(event.relative.x * mouse_sens))
 		else:
 			skin.rotate_y(deg_to_rad(event.relative.x * mouse_sens))
-			
+		
 		cpivot_v.rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
 		
 		if not PlayerVariables.underwater:
@@ -81,6 +81,7 @@ func _ready():
 func _process(delta):
 	tpcam.current = !PlayerVariables.fpcam #disables/enables 3rd person camera	
 	# Camera (joystick)
+	camdir_prev = cam_dir
 	cam_dir = Input.get_vector("cam-l", "cam-r", "cam-u", "cam-d")
 	if (cam_dir.length() > 0) and PlayerVariables.fpcam:
 		rotate_y(-deg_to_rad(cam_dir.x * mouse_sens*joycam_sens))
@@ -90,16 +91,15 @@ func _process(delta):
 		else:
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
 
-	# 3rd Person Camera (joystick) # TODO: does not work properly
+	# 3rd Person Camera (joystick)
 	elif cam_dir.length() > 0:
-		print(cam_dir)
 		rotate_y(-deg_to_rad(cam_dir.x * mouse_sens*joycam_sens))
 		if PlayerVariables.underwater:
 			skin.rotate_z(deg_to_rad(cam_dir.x * mouse_sens*joycam_sens))
 		else:
 			skin.rotate_y(deg_to_rad(cam_dir.x * mouse_sens*joycam_sens))
 			
-		cpivot_v.rotate_x(-deg_to_rad(cam_dir.y * mouse_sens*joycam_sens))
+		cpivot_v.rotate_x(deg_to_rad(cam_dir.y * mouse_sens*joycam_sens))
 		
 		if not PlayerVariables.underwater:
 			cpivot_v.rotation.x = clamp(cpivot_v.rotation.x, deg_to_rad(-89), deg_to_rad(90))
