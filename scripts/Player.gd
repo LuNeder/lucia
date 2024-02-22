@@ -54,12 +54,13 @@ func _input(event):
 	
 	# 3rd person Camera (mouse)
 	if event is InputEventMouseMotion and !PlayerVariables.fpcam:
+		print(event.relative)
 		rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
-		
 		if PlayerVariables.underwater:
 			skin.rotate_z(deg_to_rad(event.relative.x * mouse_sens))
 		else:
 			skin.rotate_y(deg_to_rad(event.relative.x * mouse_sens))
+			
 		cpivot_v.rotate_x(-deg_to_rad(event.relative.y * mouse_sens))
 		
 		if not PlayerVariables.underwater:
@@ -89,14 +90,15 @@ func _process(delta):
 		else:
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(0), deg_to_rad(170))
 
-	# 3rd Person Camera (joystick) # TODO: see if this actually works
+	# 3rd Person Camera (joystick) # TODO: does not work properly
 	elif cam_dir.length() > 0:
+		print(cam_dir)
 		rotate_y(-deg_to_rad(cam_dir.x * mouse_sens*joycam_sens))
-		
 		if PlayerVariables.underwater:
 			skin.rotate_z(deg_to_rad(cam_dir.x * mouse_sens*joycam_sens))
 		else:
 			skin.rotate_y(deg_to_rad(cam_dir.x * mouse_sens*joycam_sens))
+			
 		cpivot_v.rotate_x(-deg_to_rad(cam_dir.y * mouse_sens*joycam_sens))
 		
 		if not PlayerVariables.underwater:
