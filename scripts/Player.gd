@@ -106,6 +106,10 @@ func _process(delta):
 			cpivot_v.rotation.x = clamp(cpivot_v.rotation.x, deg_to_rad(-89), deg_to_rad(90))
 		else:
 			cpivot_v.rotation.x = clamp(cpivot_v.rotation.x, deg_to_rad(20), deg_to_rad(175)) # TODO: looping for some reason
+	
+	standing_collision_shape.rotation = skin.rotation
+	crouching_collision_shape.rotation = skin.rotation
+	
 
 func _physics_process(delta):
 	# Crouching and Sprinting
@@ -128,7 +132,7 @@ func _physics_process(delta):
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back") # We create a local variable to store the input direction.
 	# Land movement
 	if not PlayerVariables.underwater: 
-		direction = lerp(direction, ((transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()), delta*lerp_speed) #- kinda buggy
+		direction = lerp(direction, ((transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()), delta*lerp_speed)
 
 		if (not is_on_floor()): # If in the air, fall towards the floor. Literally gravity
 			target_velocity.y -= (gravity * delta)
@@ -169,17 +173,14 @@ func _physics_process(delta):
 		elif (not PlayerVariables.fpcam) and input_dir:
 			skin.rotation = cpivot_v.rotation - Vector3(-80, 0, 0) # TODO: this looks weird
 			
-			
 		if PlayerVariables.underwater and (not Input.is_action_pressed("move_up")) and (not Input.is_action_pressed("move_down")):
 			target_velocity.y = direction.y * current_speed
-		else:
-			pass
 	else:
 		target_velocity.x = move_toward(velocity.x, 0, current_speed)
-		target_velocity.z = move_toward(velocity.z, 0, current_speed)	
+		target_velocity.z = move_toward(velocity.z, 0, current_speed)
 		
 	# Moving the Character
-	velocity = target_velocity
+	velocity = target_velocity # TODO: acceleration instead of speed
 	move_and_slide()
 	
 	previous_uw = PlayerVariables.underwater
@@ -210,8 +211,10 @@ func _physics_process(delta):
 			cpivot_h.rotation.z = 0
 		if Input.is_action_pressed("move_up") or Input.is_action_pressed("move_forward"):
 			target_velocity.y = jump_impulse
-			
-
+	
+	# Ocean follows the player in order to look infinite
+	ocean.position.x = self.position.x;
+	ocean.position.z = self.position.z;
 
 	# testing
 	#print('underwater ' + str(PlayerVariables.underwater))
@@ -220,5 +223,4 @@ func _physics_process(delta):
 	#print(input_dir)
 	#print(input_dir.length())
 	
-	ocean.position.x = self.position.x;
-	ocean.position.z = self.position.z;
+

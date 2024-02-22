@@ -38,7 +38,7 @@ textures = [[ExtResource("7_bm0b5")], [ExtResource("8_lb6pl")]]
 [node name="Node3D" type="Node3D"]
 
 [node name="Ocean" parent="." instance=ExtResource("14_m6b30")]
-transform = Transform3D(40, 0, 0, 0, 1, 0, 0, 0, 40, 0, 0, 0)
+transform = Transform3D(40, 0, 0, 0, 1, 0, 0, 0, 40, 1524.85, 0, 1063.78)
 
 [node name="world" type="Node3D" parent="."]
 transform = Transform3D(40, 0, 0, 0, 1, 0, 0, 0, 40, 0, 0, 0)
