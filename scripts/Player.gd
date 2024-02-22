@@ -5,6 +5,7 @@ extends CharacterBody3D
 @onready var crouching_collision_shape = $crouching_CollisionShape3D
 @onready var ray_cast_3d = $RayCast3D
 @onready var ocean = $"/root/Node3D//Ocean"
+@onready var tpcspring = $Pivot/Pivot_v/spring
 @onready var tpcam = $Pivot/Pivot_v/spring/tpcCamera3D
 @onready var cpivot_v = $Pivot/Pivot_v
 @onready var cpivot_h = $Pivot
@@ -190,6 +191,7 @@ func _physics_process(delta):
 		
 	if PlayerVariables.underwater and not previous_uw:
 		rotation.x = (-deg_to_rad(90))
+		tpcspring.spring_length += 1
 		if PlayerVariables.fpcam:
 			head.rotation.x = head.rotation.x+deg_to_rad(90)
 		else:
@@ -197,6 +199,7 @@ func _physics_process(delta):
 			cpivot_h.rotation.z = cpivot_h.rotation.y
 			cpivot_h.rotation.y = 0
 	elif previous_uw and not PlayerVariables.underwater: 
+		tpcspring.spring_length = 2.24
 		rotation.x = 0
 		rotation.z = 0
 		if PlayerVariables.fpcam:
