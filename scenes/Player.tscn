@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://cc83u4jeon8cv"]
+[gd_scene load_steps=8 format=3 uid="uid://cc83u4jeon8cv"]
 
 [ext_resource type="Script" path="res://scripts/Player.gd" id="1_47355"]
-[ext_resource type="Script" path="res://scripts/tpcam.gd" id="2_x851y"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_8v8b7"]
 radius = 0.25
@@ -61,7 +60,6 @@ skeleton = NodePath("../..")
 
 [node name="Pivot" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.461358, 0)
-script = ExtResource("2_x851y")
 
 [node name="Pivot_v" type="Node3D" parent="Pivot"]
 
