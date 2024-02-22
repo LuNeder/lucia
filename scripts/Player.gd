@@ -167,7 +167,7 @@ func _physics_process(delta):
 		if (not PlayerVariables.underwater) and (not PlayerVariables.fpcam):
 			skin.look_at(position + direction) #lerp(position, position + direction, lerp_speed/10)
 		elif (not PlayerVariables.fpcam) and input_dir:
-			skin.rotation = cpivot_v.rotation - Vector3(90, 0, 0) # TODO: this looks weird
+			skin.rotation = cpivot_v.rotation - Vector3(-80, 0, 0) # TODO: this looks weird
 			
 			
 		if PlayerVariables.underwater and (not Input.is_action_pressed("move_up")) and (not Input.is_action_pressed("move_down")):
@@ -203,7 +203,7 @@ func _physics_process(delta):
 		rotation.x = 0
 		rotation.z = 0
 		if PlayerVariables.fpcam:
-			head.rotation.x = head.rotation.x - deg_to_rad(90)
+			head.rotation.x = head.rotation.x - deg_to_rad(70)
 		else:
 			cpivot_v.rotation.x = cpivot_v.rotation.x - deg_to_rad(90)
 			cpivot_h.rotation.y = cpivot_h.rotation.z
