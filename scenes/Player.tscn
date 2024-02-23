@@ -75,6 +75,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.461358, 0)
 
 [node name="spring" type="SpringArm3D" parent="Pivot/Pivot_v"]
 transform = Transform3D(0.996801, -0.0343538, 0.0721604, 0, 0.902901, 0.429849, -0.0799206, -0.428474, 0.900013, 0, 0, 0)
+collision_mask = 6
 spring_length = 2.24
 
 [node name="tpcCamera3D" type="Camera3D" parent="Pivot/Pivot_v/spring"]
