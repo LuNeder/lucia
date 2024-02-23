@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://clmkaaqhh6fes"]
+[gd_scene load_steps=17 format=3 uid="uid://clmkaaqhh6fes"]
 
 [ext_resource type="Script" path="res://scripts/coords.gd" id="1_42et1"]
 [ext_resource type="Texture2D" uid="uid://c2d457ftuavca" path="res://icon.svg" id="1_eblid"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://d23repmsxbhrh" path="res://scenes/AirArea.tscn" id="1_mauf7"]
 [ext_resource type="Script" path="res://scripts/RichTextLabel2.gd" id="1_oalp3"]
 [ext_resource type="Script" path="res://scripts/mov.gd" id="2_33y0t"]
+[ext_resource type="Environment" uid="uid://v8rhquulaxlw" path="res://scenes/Environments/land-env.tres" id="2_ln807"]
 [ext_resource type="Script" path="res://scripts/luzmuda.gd" id="3_oa4x0"]
 [ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="4_ql21x"]
 [ext_resource type="Resource" path="res://data.hterrain" id="5_i1oot"]
@@ -14,21 +15,6 @@
 [ext_resource type="Texture2D" uid="uid://doj4wun0oiru8" path="res://scenes/1_slot0_normal_roughness.png" id="8_lb6pl"]
 [ext_resource type="PackedScene" uid="uid://buxj0ffwrhupe" path="res://scenes/WaterArea.tscn" id="10_l6fg5"]
 [ext_resource type="PackedScene" uid="uid://fwueot7g7lg6" path="res://scenes/ocean/Ocean.tscn" id="14_m6b30"]
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gwufm"]
-sky_top_color = Color(0.133333, 0.368627, 1, 1)
-sky_horizon_color = Color(0.583333, 0.634314, 0.783333, 1)
-ground_bottom_color = Color(0.2, 0.168627, 0.133333, 1)
-ground_horizon_color = Color(0.583333, 0.634314, 0.783333, 1)
-
-[sub_resource type="Sky" id="Sky_ws31m"]
-sky_material = SubResource("ProceduralSkyMaterial_gwufm")
-
-[sub_resource type="Environment" id="Environment_5piuq"]
-background_mode = 2
-sky = SubResource("Sky_ws31m")
-tonemap_mode = 2
-glow_enabled = true
 
 [sub_resource type="Resource" id="Resource_xiyxf"]
 script = ExtResource("6_5tllw")
@@ -51,7 +37,7 @@ transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="world/env"]
-environment = SubResource("Environment_5piuq")
+environment = ExtResource("2_ln807")
 
 [node name="HTerrain" type="Node3D" parent="world"]
 transform = Transform3D(0.025, 0, 0, 0, 1, 0, 0, 0, 0.025, 0, 0, 0)

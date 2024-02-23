@@ -135,7 +135,7 @@ void fragment() {
 	
 	//float a = mix(0.01, 1.0,);
 	ALBEDO = clamp(surface_color + depth_color_adj,vec3(0.0),vec3(1.0));
-	ALPHA = clamp((1.0/(length(ALBEDO)*10.0))*2.7, 0.0, 1.0);
+	ALPHA = clamp((1.0/(length(ALBEDO)*10.0))*1.5, 0.0, 1.0);
 	METALLIC = metallic;
 	ROUGHNESS = roughness;
 	NORMAL_MAP = mix(wave_normal_blend, normal_blend, 0.5);

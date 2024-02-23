@@ -6,12 +6,16 @@ extends CharacterBody3D
 @onready var ray_cast_3d = $RayCast3D
 @onready var ocean = $"/root/Node3D//Ocean"
 @onready var tpcspring = $Pivot/Pivot_v/spring
+@onready var fpcam = $skin/Head/Camera3D
 @onready var tpcam = $Pivot/Pivot_v/spring/tpcCamera3D
 @onready var cpivot_v = $Pivot/Pivot_v
 @onready var cpivot_h = $Pivot
 @onready var skin = $skin
+const underwater_env = preload("res://scenes/Environments/underwater-env.tres")
+const land_env = preload("res://scenes/Environments/land-env.tres")
 
 var sprinting = false
+var dashing = false
 var previous_uw = true
 
 var rotAngle = 0
@@ -27,6 +31,7 @@ var heady = head
 @export var current_speed = 7
 @export var walking_speed = 7
 @export var sprint_speed = 14
+@export var dashing_speed = 2400
 @export var crouching_speed = 2
 # jumping and crouching
 @export var jump_impulse = 40
@@ -112,8 +117,10 @@ func _process(delta):
 	
 
 func _physics_process(delta):
-	# Crouching and Sprinting
-	if Input.is_action_pressed("move_down") and not PlayerVariables.underwater: # Crouching
+	# Dashing, Crouching and Sprinting
+	if Input.is_action_just_pressed("dash"): #dashing
+		dashing = true
+	elif Input.is_action_pressed("move_down") and not PlayerVariables.underwater: # Crouching
 		current_speed = crouching_speed
 		head.position.y = lerp(head.position.y, heigh + crouching_depth, delta*lerp_speed)
 		crouching_collision_shape.disabled = false
@@ -127,7 +134,7 @@ func _physics_process(delta):
 			current_speed = sprint_speed
 		elif not(sprinting and Input.is_action_pressed("move_forward")): # Sticky
 			sprinting = false
-			current_speed = walking_speed
+			if not dashing: current_speed = walking_speed
 	
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back") # We create a local variable to store the input direction.
 	# Land movement
@@ -181,6 +188,7 @@ func _physics_process(delta):
 		
 	# Moving the Character
 	velocity = target_velocity # TODO: acceleration instead of speed
+	print(velocity)
 	move_and_slide()
 	
 	previous_uw = PlayerVariables.underwater
@@ -189,8 +197,11 @@ func _physics_process(delta):
 		PlayerVariables.underwater =  not ("AirArea" in str(parea.get_overlapping_areas()))
 	else:
 		PlayerVariables.underwater =  ("WaterArea" in str(parea.get_overlapping_areas()))
-		
+	
+	# Set transition between water and land # TODO: after acceleration is done, do diving and stuff (in visuals only?)	
 	if PlayerVariables.underwater and not previous_uw:
+		fpcam.environment = underwater_env
+		tpcam.environment = underwater_env
 		rotation.x = (-deg_to_rad(90))
 		tpcspring.spring_length += 1
 		if PlayerVariables.fpcam:
@@ -200,11 +211,13 @@ func _physics_process(delta):
 			cpivot_h.rotation.z = cpivot_h.rotation.y
 			cpivot_h.rotation.y = 0
 	elif previous_uw and not PlayerVariables.underwater: 
+		fpcam.environment = land_env
+		tpcam.environment = land_env
 		tpcspring.spring_length = 2.24
 		rotation.x = 0
 		rotation.z = 0
 		if PlayerVariables.fpcam:
-			head.rotation.x = head.rotation.x - deg_to_rad(70)
+			head.rotation.x = head.rotation.x - deg_to_rad(90)
 		else:
 			cpivot_v.rotation.x = cpivot_v.rotation.x - deg_to_rad(90)
 			cpivot_h.rotation.y = cpivot_h.rotation.z

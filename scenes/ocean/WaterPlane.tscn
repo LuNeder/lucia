@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://cvb2tjos0wmjc"]
+[gd_scene load_steps=15 format=3 uid="uid://cvb2tjos0wmjc"]
 
 [ext_resource type="Shader" path="res://shaders/Water-ocean.gdshader" id="1_kbplt"]
+[ext_resource type="Shader" path="res://shaders/Water-ocean-down.gdshader" id="1_w2amm"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ag74k"]
 lightmap_size_hint = Vector2i(52, 52)
@@ -64,7 +65,36 @@ shader_parameter/wave_direction2 = Vector2(-0.5, 0.5)
 shader_parameter/time_scale = 0.1
 shader_parameter/noise_scale = 20.0
 shader_parameter/height_scale = 2.0
-shader_parameter/color_deep = Color(0.109804, 0.290196, 0.329412, 1)
+shader_parameter/color_deep = Color(0.11, 0.29, 0.33, 1)
+shader_parameter/color_shallow = Color(0, 0.47, 0.76, 1)
+shader_parameter/beers_law = 2.0
+shader_parameter/depth_offset = 1.5
+shader_parameter/edge_scale = 0.3
+shader_parameter/near = 1.0
+shader_parameter/far = 1000.0
+shader_parameter/edge_color = Color(1, 1, 1, 1)
+shader_parameter/wave = SubResource("NoiseTexture2D_2r6nl")
+shader_parameter/wave_bump = SubResource("NoiseTexture2D_sbrqa")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_icbrf")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_k33jm")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_lakhd"]
+flip_faces = true
+size = Vector2(10.05, 10.05)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_76diu"]
+render_priority = 0
+shader = ExtResource("1_w2amm")
+shader_parameter/albedo = Color(0, 0.32, 0.43, 1)
+shader_parameter/albedo2 = Color(0, 0.47, 0.76, 1)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.177
+shader_parameter/wave_direction = Vector2(0.5, -0.2)
+shader_parameter/wave_direction2 = Vector2(-0.5, 0.5)
+shader_parameter/time_scale = 0.1
+shader_parameter/noise_scale = 20.0
+shader_parameter/height_scale = 2.0
+shader_parameter/color_deep = Color(0.11, 0.29, 0.33, 1)
 shader_parameter/color_shallow = Color(0, 0.47, 0.76, 1)
 shader_parameter/beers_law = 2.0
 shader_parameter/depth_offset = 1.5
@@ -80,3 +110,7 @@ shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_k33jm")
 [node name="WaterPlane" type="MeshInstance3D"]
 mesh = SubResource("PlaneMesh_ag74k")
 surface_material_override/0 = SubResource("ShaderMaterial_jk1x3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_lakhd")
+surface_material_override/0 = SubResource("ShaderMaterial_76diu")
