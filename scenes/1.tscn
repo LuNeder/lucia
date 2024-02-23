@@ -116,19 +116,6 @@ script = ExtResource("1_42et1")
 
 [node name="Player" parent="." instance=ExtResource("1_m5p46")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.3702, 3.6403, 260.672)
-current_max_speed = null
-walking_speed = null
-sprint_speed = null
-swimming_speed = null
-uw_sprint_speed = null
-dashing_speed = null
-crouching_speed = null
-jump_impulse = null
-crouching_depth = null
-heigh = null
-mouse_sens = null
-joycam_sens = null
-lerp_speed = null
 
 [node name="CameraPivot" type="Marker3D" parent="."]
 transform = Transform3D(-0.164228, -0.172968, 0.971139, -0.00484114, 0.984636, 0.174553, -0.98641, 0.0239652, -0.162543, 93.2722, -8.404, 197.326)

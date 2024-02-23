@@ -45,7 +45,11 @@ var heady = head
 # The downward acceleration when in the air, in meters per second squared. (gravity) *10
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity") *10
 # Accelerations:
-
+@export var uw_deccel: float = -2.0 *10
+@export var air_deccel: float = -0.5 *10 
+@export var ground_deccel: float = -12.0 *10
+@export var player_accel: float = 6.0 *10
+@export var current_accel: float = 0.0 *10
 
 var target_velocity: Vector3 = Vector3.ZERO
 var direction: Vector3 = Vector3.ZERO
@@ -126,7 +130,7 @@ func _process(delta):
 func _physics_process(delta):
 	# Dashing, Crouching and Sprinting
 	if Input.is_action_just_pressed("dash"): #dashing
-		dashing = true
+		pass #dashing = true
 	elif Input.is_action_pressed("move_down") and not PlayerVariables.underwater: # Crouching
 		current_max_speed = crouching_speed
 		head.position.y = lerp(head.position.y, heigh + crouching_depth, delta*lerp_speed)
@@ -138,17 +142,23 @@ func _physics_process(delta):
 		head.position.y = lerp(head.position.y, heigh, delta*lerp_speed)
 		if Input.is_action_pressed("sprint"): # Sprint
 			sprinting = true
-			current_max_speed = sprint_speed
+			if not PlayerVariables.underwater: current_max_speed = sprint_speed
+			else: current_max_speed = uw_sprint_speed
 		elif not(sprinting and Input.is_action_pressed("move_forward")): # Sticky
 			sprinting = false
-			if not dashing: current_max_speed = walking_speed
+			if (not dashing) and (not PlayerVariables.underwater): current_max_speed = walking_speed
+			elif PlayerVariables.underwater and not dashing: current_max_speed = swimming_speed
 	
 	var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back") # We create a local variable to store the input direction.
 	# Land movement
-	if not PlayerVariables.underwater: 
+	if not PlayerVariables.underwater:
+		if input_dir != Vector2.ZERO: current_accel = player_accel
+		else: current_accel = ground_deccel
+		
 		direction = ((transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()) #lerp(direction, ((transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()), delta*lerp_speed)
 
 		if (not is_on_floor()): # If in the air, fall towards the floor. Literally gravity
+			current_accel = air_deccel
 			target_velocity.y = velocity.y - (gravity * delta)
 	
 		if is_on_floor() and Input.is_action_pressed("move_up"): # Jump
@@ -156,7 +166,9 @@ func _physics_process(delta):
 
 	# Water movement
 	if PlayerVariables.underwater:
+		current_accel = player_accel
 		if input_dir == Vector2.ZERO and (not Input.is_action_pressed("move_up")) and (not Input.is_action_pressed("move_down")):
+			current_accel = uw_deccel
 			direction = lerp(direction, Vector3.ZERO, delta*lerp_speed*0.25)
 			target_velocity.y = lerp(target_velocity.y, 0.0, delta*lerp_speed*0.25)
 		# uw-up-down
@@ -188,10 +200,13 @@ func _physics_process(delta):
 		if PlayerVariables.underwater and (not Input.is_action_pressed("move_up")) and (not Input.is_action_pressed("move_down")):
 			target_velocity.y = direction.y * current_max_speed
 	else:
-		pass
-	
-	target_velocity.x = velocity.x + (direction.x * current) #* input_dir.length()
-	target_velocity.z = direction.z * current_max_speed #* input_dir.length()
+		pass #direction = velocity.normalized()
+		
+	print(current_accel, current_max_speed)
+	current_accel = current_accel
+	target_velocity.x = clamp(velocity.x + (current_accel * delta), - current_max_speed, current_max_speed)* direction.x#* input_dir.length()
+	#target_velocity.z = direction.z * current_max_speed #* input_dir.length()
+	target_velocity.z = clamp(velocity.z + (current_accel * delta), - current_max_speed, current_max_speed)* direction.z #* input_dir.length()
 		
 		
 	# Moving the Character
