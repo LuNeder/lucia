@@ -34,14 +34,18 @@ var heady = head
 @export var current_max_speed: float = 7
 @export var walking_speed: float = 7
 @export var sprint_speed: float = 14
+@export var swimming_speed: float = 14
+@export var uw_sprint_speed: float = 28.5
 @export var dashing_speed: float = 2400
 @export var crouching_speed: float = 2
 # jumping and crouching
 @export var jump_impulse: float = 40
 @export var crouching_depth: float = -0.5
 @export var heigh: float = 0.68#1.64/2
-# The downward acceleration when in the air, in meters per second squared. (gravity)
-var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")*10
+# The downward acceleration when in the air, in meters per second squared. (gravity) *10
+var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity") *10
+# Accelerations:
+
 
 var target_velocity: Vector3 = Vector3.ZERO
 var direction: Vector3 = Vector3.ZERO
@@ -142,10 +146,10 @@ func _physics_process(delta):
 	var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back") # We create a local variable to store the input direction.
 	# Land movement
 	if not PlayerVariables.underwater: 
-		direction = lerp(direction, ((transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()), delta*lerp_speed)
+		direction = ((transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()) #lerp(direction, ((transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()), delta*lerp_speed)
 
 		if (not is_on_floor()): # If in the air, fall towards the floor. Literally gravity
-			target_velocity.y -= (gravity * delta)
+			target_velocity.y = velocity.y - (gravity * delta)
 	
 		if is_on_floor() and Input.is_action_pressed("move_up"): # Jump
 			target_velocity.y = jump_impulse
@@ -176,9 +180,6 @@ func _physics_process(delta):
 		
 	# We check for each move input and update the direction accordingly.
 	if direction:
-		print(direction)
-		target_velocity.x = direction.x * current_max_speed #* input_dir.length()
-		target_velocity.z = direction.z * current_max_speed #* input_dir.length()
 		if (not PlayerVariables.underwater) and (not PlayerVariables.fpcam):
 			skin.look_at(position + direction) #lerp(position, position + direction, lerp_speed/10)
 		elif (not PlayerVariables.fpcam) and input_dir:
@@ -187,9 +188,11 @@ func _physics_process(delta):
 		if PlayerVariables.underwater and (not Input.is_action_pressed("move_up")) and (not Input.is_action_pressed("move_down")):
 			target_velocity.y = direction.y * current_max_speed
 	else:
-
-		pass #target_velocity.x = move_toward(velocity.x, 0, current_max_speed)
-		#target_velocity.z = move_toward(velocity.z, 0, current_max_speed)
+		pass
+	
+	target_velocity.x = velocity.x + (direction.x * current) #* input_dir.length()
+	target_velocity.z = direction.z * current_max_speed #* input_dir.length()
+		
 		
 	# Moving the Character
 	velocity = target_velocity # TODO: acceleration instead of speed
