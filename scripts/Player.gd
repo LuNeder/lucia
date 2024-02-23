@@ -1,5 +1,7 @@
 extends CharacterBody3D
 @onready var parea = $Area3D
+@onready var fpcamarea = $skin/Head/Camera3D/fpcamArea3D
+@onready var tpcamarea = $Pivot/Pivot_v/spring/tpcCamera3D/tpcamArea3D
 @onready var head = $skin/Head
 @onready var standing_collision_shape = $standing_CollisionShape3D
 @onready var crouching_collision_shape = $crouching_CollisionShape3D
@@ -193,15 +195,29 @@ func _physics_process(delta):
 	
 	previous_uw = PlayerVariables.underwater
 	# Is she underwater?
-	if position.y <= 0:
-		PlayerVariables.underwater =  not ("AirArea" in str(parea.get_overlapping_areas()))
+	var areacheckers = [parea, tpcamarea, fpcamarea]
+	var cameras = [self, tpcam, fpcam]
+	var areas = [PlayerVariables.underwater, PlayerVariables.tpcam_uw, PlayerVariables.fpcam_uw]
+	for i in 3:
+		if cameras[i].global_position.y <= 0:
+			areas[i] =  not ("AirArea" in str(areacheckers[i].get_overlapping_areas()))
+		else:
+			areas[i] =  ("WaterArea" in str(areacheckers[i].get_overlapping_areas()))
+	PlayerVariables.underwater = areas[0]
+	PlayerVariables.tpcam_uw = areas[1]
+	PlayerVariables.fpcam_uw = areas[2]
+	
+	if PlayerVariables.fpcam_uw:
+		fpcam.environment = underwater_env
 	else:
-		PlayerVariables.underwater =  ("WaterArea" in str(parea.get_overlapping_areas()))
+		fpcam.environment = land_env
+	if PlayerVariables.tpcam_uw:
+		tpcam.environment = underwater_env
+	else:
+		tpcam.environment = land_env
 	
 	# Set transition between water and land # TODO: after acceleration is done, do diving and stuff (in visuals only?)	
 	if PlayerVariables.underwater and not previous_uw:
-		fpcam.environment = underwater_env
-		tpcam.environment = underwater_env
 		rotation.x = (-deg_to_rad(90))
 		tpcspring.spring_length += 1
 		if PlayerVariables.fpcam:

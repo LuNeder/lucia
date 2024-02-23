@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cc83u4jeon8cv"]
+[gd_scene load_steps=9 format=3 uid="uid://cc83u4jeon8cv"]
 
 [ext_resource type="Script" path="res://scripts/Player.gd" id="1_47355"]
 
@@ -9,6 +9,9 @@ height = 0.5
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_f1awq"]
 radius = 0.05
 height = 0.1
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_phvol"]
+radius = 0.005
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_p2ohb"]
 radius = 0.25
@@ -53,6 +56,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.192838, 0)
 cull_mask = 1048511
 current = true
 
+[node name="fpcamArea3D" type="Area3D" parent="skin/Head/Camera3D"]
+collision_layer = 9
+collision_mask = 15
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="skin/Head/Camera3D/fpcamArea3D"]
+shape = SubResource("SphereShape3D_phvol")
+
 [node name="Character" type="MeshInstance3D" parent="skin"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
 mesh = SubResource("CapsuleMesh_p2ohb")
@@ -69,6 +79,14 @@ spring_length = 2.24
 
 [node name="tpcCamera3D" type="Camera3D" parent="Pivot/Pivot_v/spring"]
 transform = Transform3D(0.996801, 0.0401015, -0.0691315, -0.0343538, 0.996006, 0.0824142, 0.0721603, -0.0797755, 0.994197, 0.0841786, 0.0375417, 2.24754)
+
+[node name="tpcamArea3D" type="Area3D" parent="Pivot/Pivot_v/spring/tpcCamera3D"]
+transform = Transform3D(1, -4.65661e-08, -7.45059e-09, 3.65414e-08, 0.865003, -0.501766, 2.98101e-08, 0.501766, 0.865003, 0, 0, 0)
+collision_layer = 9
+collision_mask = 15
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/Pivot_v/spring/tpcCamera3D/tpcamArea3D"]
+shape = SubResource("SphereShape3D_phvol")
 
 [node name="standing_CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_caoc6")

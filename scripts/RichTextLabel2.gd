@@ -7,5 +7,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	self.text = "uw " + str(PlayerVariables.underwater) 
+func _physics_process(delta):
+	self.text = "uw " + str(PlayerVariables.underwater)
+	text += " tpc_uw " + str(PlayerVariables.tpcam_uw)
+	text += " fpc_uw " + str(PlayerVariables.fpcam_uw)
