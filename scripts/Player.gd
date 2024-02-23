@@ -6,6 +6,7 @@ extends CharacterBody3D
 @onready var standing_collision_shape = $standing_CollisionShape3D
 @onready var crouching_collision_shape = $crouching_CollisionShape3D
 @onready var ray_cast_3d = $RayCast3D
+@onready var water_ray_cast = $"water-RayCast"
 @onready var ocean = $"/root/Node3D//Ocean"
 @onready var tpcspring = $Pivot/Pivot_v/spring
 @onready var fpcam = $skin/Head/Camera3D
@@ -30,7 +31,7 @@ var heads = []
 var heady = head 
 
 # Speeds in meters per second.
-@export var current_speed = 7
+@export var current_max_speed = 7
 @export var walking_speed = 7
 @export var sprint_speed = 14
 @export var dashing_speed = 2400
@@ -38,7 +39,7 @@ var heady = head
 # jumping and crouching
 @export var jump_impulse = 40
 @export var crouching_depth = -0.5
-@export var heigh = 1.64/2
+@export var heigh = 0.68#1.64/2
 # The downward acceleration when in the air, in meters per second squared. (gravity)
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")*10
 
@@ -123,7 +124,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("dash"): #dashing
 		dashing = true
 	elif Input.is_action_pressed("move_down") and not PlayerVariables.underwater: # Crouching
-		current_speed = crouching_speed
+		current_max_speed = crouching_speed
 		head.position.y = lerp(head.position.y, heigh + crouching_depth, delta*lerp_speed)
 		crouching_collision_shape.disabled = false
 		standing_collision_shape.disabled = true
@@ -133,10 +134,10 @@ func _physics_process(delta):
 		head.position.y = lerp(head.position.y, heigh, delta*lerp_speed)
 		if Input.is_action_pressed("sprint"): # Sprint
 			sprinting = true
-			current_speed = sprint_speed
+			current_max_speed = sprint_speed
 		elif not(sprinting and Input.is_action_pressed("move_forward")): # Sticky
 			sprinting = false
-			if not dashing: current_speed = walking_speed
+			if not dashing: current_max_speed = walking_speed
 	
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back") # We create a local variable to store the input direction.
 	# Land movement
@@ -156,9 +157,9 @@ func _physics_process(delta):
 			target_velocity.y = lerp(target_velocity.y, 0.0, delta*lerp_speed*0.25)
 		# uw-up-down
 		if Input.is_action_pressed("move_up"):
-			target_velocity.y = current_speed
+			target_velocity.y = current_max_speed
 		if Input.is_action_pressed("move_down"):
-			target_velocity.y = - current_speed
+			target_velocity.y = - current_max_speed
 		
 		# uw-wasd
 		heads = [cpivot_v, head]
@@ -175,18 +176,20 @@ func _physics_process(delta):
 		
 	# We check for each move input and update the direction accordingly.
 	if direction:
-		target_velocity.x = direction.x * current_speed * input_dir.length()
-		target_velocity.z = direction.z * current_speed * input_dir.length()
+		print(direction)
+		target_velocity.x = direction.x * current_max_speed #* input_dir.length()
+		target_velocity.z = direction.z * current_max_speed #* input_dir.length()
 		if (not PlayerVariables.underwater) and (not PlayerVariables.fpcam):
 			skin.look_at(position + direction) #lerp(position, position + direction, lerp_speed/10)
 		elif (not PlayerVariables.fpcam) and input_dir:
 			skin.rotation = cpivot_v.rotation - Vector3(-80, 0, 0) # TODO: this looks weird
 			
 		if PlayerVariables.underwater and (not Input.is_action_pressed("move_up")) and (not Input.is_action_pressed("move_down")):
-			target_velocity.y = direction.y * current_speed
+			target_velocity.y = direction.y * current_max_speed
 	else:
-		target_velocity.x = move_toward(velocity.x, 0, current_speed)
-		target_velocity.z = move_toward(velocity.z, 0, current_speed)
+
+		pass #target_velocity.x = move_toward(velocity.x, 0, current_max_speed)
+		#target_velocity.z = move_toward(velocity.z, 0, current_max_speed)
 		
 	# Moving the Character
 	velocity = target_velocity # TODO: acceleration instead of speed
@@ -203,9 +206,12 @@ func _physics_process(delta):
 			areas[i] =  not ("AirArea" in str(areacheckers[i].get_overlapping_areas()))
 		else:
 			areas[i] =  ("WaterArea" in str(areacheckers[i].get_overlapping_areas()))
-	PlayerVariables.underwater = areas[0]
 	PlayerVariables.tpcam_uw = areas[1]
 	PlayerVariables.fpcam_uw = areas[2]
+	# Avoids player standing up if gets out of water in place with not enough height
+	if (PlayerVariables.underwater and not water_ray_cast.is_colliding()) or (not PlayerVariables.underwater):
+		PlayerVariables.underwater = areas[0]
+
 	
 	if PlayerVariables.fpcam_uw:
 		fpcam.environment = underwater_env
@@ -248,7 +254,7 @@ func _physics_process(delta):
 	# testing
 	#print('underwater ' + str(PlayerVariables.underwater))
 	# print(str(parea.get_overlapping_areas())) # This detects the areas!!
-	#print(current_speed)
+	#print(current_max_speed)
 	#print(input_dir)
 	#print(input_dir.length())
 	
