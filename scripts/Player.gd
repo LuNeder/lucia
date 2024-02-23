@@ -193,8 +193,8 @@ func _physics_process(delta):
 	# We check for each move input and update the direction accordingly.
 	if direction:
 		current_accel = current_accel
-		target_velocity.x = move_toward(velocity.x, current_max_speed  * input_dir.length(), current_accel*delta)* direction.x
-		target_velocity.z = move_toward(velocity.z, current_max_speed * input_dir.length(), current_accel*delta) * direction.z
+		target_velocity.x = move_toward(velocity.x, current_max_speed  * direction.x * input_dir.length(), current_accel*delta)
+		target_velocity.z = move_toward(velocity.z, current_max_speed * direction.z * input_dir.length(), current_accel*delta) 
 		
 		
 		if (not PlayerVariables.underwater) and (not PlayerVariables.fpcam):
