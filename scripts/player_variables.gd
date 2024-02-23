@@ -1,7 +1,7 @@
 extends Node
 
-var underwater = true
-var fpcam = 1
-var fpcam_uw = true
-var tpcam_uw = true
+var underwater:bool = true
+var fpcam: int = 1 # but technically a bool
+var fpcam_uw: bool = true
+var tpcam_uw: bool = true
 

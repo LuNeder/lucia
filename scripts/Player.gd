@@ -17,39 +17,39 @@ extends CharacterBody3D
 const underwater_env = preload("res://scenes/Environments/underwater-env.tres")
 const land_env = preload("res://scenes/Environments/land-env.tres")
 
-var sprinting = false
-var dashing = false
-var previous_uw = true
+var sprinting: bool = false
+var dashing: bool = false
+var previous_uw: bool = true
 
-var rotAngle = 0
-var charTf = 0
-var rotTf = 0
-var pVec = Vector3.ZERO
-var pVec1 = Vector3.ZERO
-var pVec2 = Vector3.ZERO
-var heads = []
+var rotAngle: float = 0
+var charTf: float = 0
+var rotTf: float = 0
+var pVec: Vector3 = Vector3.ZERO
+var pVec1: Vector3 = Vector3.ZERO
+var pVec2: Vector3 = Vector3.ZERO
+var heads: Array = []
 var heady = head 
 
 # Speeds in meters per second.
-@export var current_max_speed = 7
-@export var walking_speed = 7
-@export var sprint_speed = 14
-@export var dashing_speed = 2400
-@export var crouching_speed = 2
+@export var current_max_speed: float = 7
+@export var walking_speed: float = 7
+@export var sprint_speed: float = 14
+@export var dashing_speed: float = 2400
+@export var crouching_speed: float = 2
 # jumping and crouching
-@export var jump_impulse = 40
-@export var crouching_depth = -0.5
-@export var heigh = 0.68#1.64/2
+@export var jump_impulse: float = 40
+@export var crouching_depth: float = -0.5
+@export var heigh: float = 0.68#1.64/2
 # The downward acceleration when in the air, in meters per second squared. (gravity)
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")*10
+var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")*10
 
-var target_velocity = Vector3.ZERO
-var direction = Vector3.ZERO
-var cam_dir = Vector2.ZERO
-var camdir_prev = Vector2.ZERO
-@export var mouse_sens = 0.4
-@export var joycam_sens = 5
-@export var lerp_speed = 10 
+var target_velocity: Vector3 = Vector3.ZERO
+var direction: Vector3 = Vector3.ZERO
+var cam_dir: Vector2 = Vector2.ZERO
+var camdir_prev: Vector2 = Vector2.ZERO
+@export var mouse_sens: float = 0.4
+@export var joycam_sens: float = 5
+@export var lerp_speed: float = 10 
 
 
 func _input(event):
@@ -139,7 +139,7 @@ func _physics_process(delta):
 			sprinting = false
 			if not dashing: current_max_speed = walking_speed
 	
-	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back") # We create a local variable to store the input direction.
+	var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back") # We create a local variable to store the input direction.
 	# Land movement
 	if not PlayerVariables.underwater: 
 		direction = lerp(direction, ((transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()), delta*lerp_speed)
@@ -198,9 +198,9 @@ func _physics_process(delta):
 	
 	previous_uw = PlayerVariables.underwater
 	# Is she underwater?
-	var areacheckers = [parea, tpcamarea, fpcamarea]
-	var cameras = [self, tpcam, fpcam]
-	var areas = [PlayerVariables.underwater, PlayerVariables.tpcam_uw, PlayerVariables.fpcam_uw]
+	var areacheckers: Array = [parea, tpcamarea, fpcamarea]
+	var cameras: Array = [self, tpcam, fpcam]
+	var areas: Array = [PlayerVariables.underwater, PlayerVariables.tpcam_uw, PlayerVariables.fpcam_uw]
 	for i in 3:
 		if cameras[i].global_position.y <= 0:
 			areas[i] =  not ("AirArea" in str(areacheckers[i].get_overlapping_areas()))
