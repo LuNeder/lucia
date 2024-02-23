@@ -45,11 +45,11 @@ var heady = head
 # The downward acceleration when in the air, in meters per second squared. (gravity) *10
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity") *10
 # Accelerations:
-@export var uw_deccel: float = -2.0 *10
-@export var air_deccel: float = -0.5 *10 
-@export var ground_deccel: float = -12.0 *10
-@export var player_accel: float = 6.0 *10
-@export var current_accel: float = 0.0 *10
+@export var uw_deccel: float = 4.0 
+@export var air_deccel: float = 0.5 
+@export var ground_deccel: float = 12.0 
+@export var player_accel: float = 6.0 
+@export var current_accel: float = 0.0 
 
 var target_velocity: Vector3 = Vector3.ZERO
 var direction: Vector3 = Vector3.ZERO
@@ -169,8 +169,8 @@ func _physics_process(delta):
 		current_accel = player_accel
 		if input_dir == Vector2.ZERO and (not Input.is_action_pressed("move_up")) and (not Input.is_action_pressed("move_down")):
 			current_accel = uw_deccel
-			direction = lerp(direction, Vector3.ZERO, delta*lerp_speed*0.25)
-			target_velocity.y = lerp(target_velocity.y, 0.0, delta*lerp_speed*0.25)
+			direction = Vector3.ZERO
+			target_velocity.y = move_toward(velocity.y, 0, current_accel*delta)
 		# uw-up-down
 		if Input.is_action_pressed("move_up"):
 			target_velocity.y = current_max_speed
@@ -192,22 +192,28 @@ func _physics_process(delta):
 		
 	# We check for each move input and update the direction accordingly.
 	if direction:
+		current_accel = current_accel
+		target_velocity.x = move_toward(velocity.x, current_max_speed  * input_dir.length(), current_accel*delta)* direction.x
+		target_velocity.z = move_toward(velocity.z, current_max_speed * input_dir.length(), current_accel*delta) * direction.z
+		
+		
 		if (not PlayerVariables.underwater) and (not PlayerVariables.fpcam):
 			skin.look_at(position + direction) #lerp(position, position + direction, lerp_speed/10)
 		elif (not PlayerVariables.fpcam) and input_dir:
 			skin.rotation = cpivot_v.rotation - Vector3(-80, 0, 0) # TODO: this looks weird
 			
 		if PlayerVariables.underwater and (not Input.is_action_pressed("move_up")) and (not Input.is_action_pressed("move_down")):
-			target_velocity.y = direction.y * current_max_speed
+			target_velocity.y = move_toward(velocity.y, current_max_speed * direction.y * input_dir.length(), current_accel*delta)
 	else:
-		pass #direction = velocity.normalized()
+		target_velocity.x = move_toward(velocity.x, 0, current_accel*delta)
+		target_velocity.z = move_toward(velocity.z, 0, current_accel*delta)
 		
 	print(current_accel, current_max_speed)
-	current_accel = current_accel
-	target_velocity.x = clamp(velocity.x + (current_accel * delta), - current_max_speed, current_max_speed)* direction.x#* input_dir.length()
-	#target_velocity.z = direction.z * current_max_speed #* input_dir.length()
-	target_velocity.z = clamp(velocity.z + (current_accel * delta), - current_max_speed, current_max_speed)* direction.z #* input_dir.length()
-		
+	
+	#target_velocity.x = clamp(velocity.x + (current_accel * delta), - current_max_speed, current_max_speed)* direction.x#* input_dir.length()
+	# #target_velocity.z = direction.z * current_max_speed #* input_dir.length()
+	#target_velocity.z = clamp(velocity.z + (current_accel * delta), - current_max_speed, current_max_speed)* direction.z #* input_dir.length()
+	
 		
 	# Moving the Character
 	velocity = target_velocity # TODO: acceleration instead of speed
