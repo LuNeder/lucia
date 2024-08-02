@@ -12,11 +12,13 @@ config_version=5
 
 config/name="Lucia"
 run/main_scene="res://scenes/1.tscn"
+config/use_custom_user_dir=true
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
+Gdmol="*res://scripts/gdmol.gd"
 SimpleGrass="*res://addons/simplegrasstextured/singleton.tscn"
 PlayerVariables="*res://scripts/player_variables.gd"
 

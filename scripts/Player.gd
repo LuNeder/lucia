@@ -93,6 +93,8 @@ func _input(event):
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	var file = FileAccess.open("user://test.dat", FileAccess.WRITE)
+	file.close()
 
 
 func _process(delta):
