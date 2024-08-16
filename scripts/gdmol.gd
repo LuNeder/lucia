@@ -31,11 +31,13 @@ func _ready():
 	findmods(path)
 	print("Modded: " + str(modded))
 	print(mods)
+	if modded:
+		loadmods()
 
 func findmods(path):
 	var dir = DirAccess.open(path)
-	dir.set_include_hidden(false)
 	if dir:
+		dir.set_include_hidden(false)
 		var empty: PackedStringArray = []
 		var files: PackedStringArray = dir.get_files_at(path)
 		var directories: PackedStringArray = dir.get_directories_at(path)
@@ -51,26 +53,50 @@ func findmods(path):
 				if ((".json" in i) or (".JSON" in i)):
 					var json = JSON.new()
 					var json_file = FileAccess.open( path+"/"+i, FileAccess.READ )
-					var json_string = json_file.get_as_text()
+					var json_string: String = json_file.get_as_text()
 					var error = json.parse(json_string)
 					if error == OK:
 						var data_received = json.data
 						if typeof(data_received) == TYPE_DICTIONARY:
-							mods.append(data_received)
+							var mod: Dictionary = data_received
+							mod.path = path
+							mods.append(mod)
 						else:
 							print("Unexpected data")
 					else:
 						print("JSON Parse Error: ", json.get_error_message(), " in ", json_string, \
 						" at line ", json.get_error_line())
-				elif ((".pck" in i) or (".PCK" in i) or (".zip" in i) or (".ZIP" in i)):
-					pass # TODO!
-			
 		elif ("disable" in files):
 			print("Mod disabled: " + path)
 			
 		for i in directories:
 			print("Found directory: " + i)
 			findmods(dir.get_current_dir() + "/" + i)
+			
+		# dir.close()
 	else:
 		modded = false
 		print("Mod folder not detected in " + path)
+
+func loadmods():
+	for mod in mods:
+		var dir = DirAccess.open(mod.path)
+		if not dir:
+			print("Error loading mod: " + str(mod))
+		else:
+			dir.set_include_hidden(false)
+			var files: PackedStringArray = dir.get_files_at(mod.path)
+			for file in files:
+				if ((".pck" in file) or (".PCK" in file) or (".zip" in file) or (".ZIP" in file)):
+					var replace: bool = true
+					if mod.has("noreplace"):
+						if mod.noreplace:
+							replace = false
+					print(replace)
+					var success = ProjectSettings.load_resource_pack(file, replace)
+					if success:
+						print("Loaded mod: " + str(mod))
+					else:
+						print("Error loading mod: " + str(mod))
+			
+			
