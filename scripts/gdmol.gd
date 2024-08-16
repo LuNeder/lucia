@@ -27,7 +27,6 @@ var modded: bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var path: String = "user://Mods"
-	print("AAAAAAAAAAAAAA")
 	findmods(path)
 	print("Modded: " + str(modded))
 	print(mods)
@@ -41,7 +40,7 @@ func findmods(path):
 		var empty: PackedStringArray = []
 		var files: PackedStringArray = dir.get_files_at(path)
 		var directories: PackedStringArray = dir.get_directories_at(path)
-		print(files)
+		# print(files)
 		if (files != empty) and ("disable" not in files):
 			modded = true
 			if (".json" not in str(files)) or (not((".zip" in str(files)) or (".pck" in str(files)))):
@@ -58,6 +57,7 @@ func findmods(path):
 					if error == OK:
 						var data_received = json.data
 						if typeof(data_received) == TYPE_DICTIONARY:
+							# Adds the mod path to the dictionary, and then adds the mod to the mods arrray
 							var mod: Dictionary = data_received
 							mod.path = path
 							mods.append(mod)
