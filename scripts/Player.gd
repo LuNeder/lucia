@@ -202,7 +202,12 @@ func _physics_process(delta):
 		#if PlayerVariables.underwater and direction and velocity: # target_velocity = target_velocity.rotated(Vector3.UP, direction.angle_to(target_velocity))
 			#target_velocity = Vector3(arget_velocity * direction
 		if direction and velocity:
+			var tgty: float = target_velocity.y
+			if not PlayerVariables.underwater:
+				target_velocity.y = 0.0
 			target_velocity = target_velocity.length() * direction.normalized()
+			if not PlayerVariables.underwater:
+				target_velocity.y = tgty
 			
 		if (not PlayerVariables.underwater) and (not PlayerVariables.fpcam):
 			skin.look_at(position + direction) #lerp(position, position + direction, lerp_speed/10)
