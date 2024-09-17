@@ -294,4 +294,3 @@ func _physics_process(delta):
 	#print(input_dir)
 	#print(input_dir.length())
 	
-
