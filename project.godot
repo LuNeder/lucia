@@ -13,14 +13,14 @@ config_version=5
 config/name="Lucia"
 run/main_scene="res://scenes/1.tscn"
 config/use_custom_user_dir=true
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/features=PackedStringArray("4.3", "Double Precision", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 Gdmol="*res://scripts/gdmol.gd"
-SimpleGrass="*res://addons/simplegrasstextured/singleton.tscn"
 PlayerVariables="*res://scripts/player_variables.gd"
+SimpleGrass="*res://addons/simplegrasstextured/singleton.tscn"
 
 [editor_plugins]
 
@@ -112,6 +112,10 @@ dash={
 
 [shader_globals]
 
+ocean_pos={
+"type": "vec3",
+"value": Vector3(0, 0, 0)
+}
 sgt_player_position={
 "type": "vec3",
 "value": Vector3(1e+06, 1e+06, 1e+06)
@@ -147,8 +151,4 @@ sgt_wind_turbulence={
 sgt_wind_pattern={
 "type": "sampler2D",
 "value": "res://addons/simplegrasstextured/images/wind_pattern.png"
-}
-ocean_pos={
-"type": "vec3",
-"value": Vector3(0, 0, 0)
 }
