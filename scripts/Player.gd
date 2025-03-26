@@ -220,7 +220,9 @@ func _physics_process(delta):
 		target_velocity.x = move_toward(velocity.x, 0, current_accel*delta)
 		target_velocity.z = move_toward(velocity.z, 0, current_accel*delta)
 		
-	print(current_accel, current_max_speed)
+	print("curr-accel: ", current_accel, " curr-max-vel: ", current_max_speed)
+	print("dir: ", direction)
+	print("tgt: ", target_velocity)
 	
 	#target_velocity.x = clamp(velocity.x + (current_accel * delta), - current_max_speed, current_max_speed)* direction.x#* input_dir.length()
 	# #target_velocity.z = direction.z * current_max_speed #* input_dir.length()
