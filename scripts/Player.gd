@@ -195,8 +195,10 @@ func _physics_process(delta):
 	# We check for each move input and update the direction accordingly.
 	if direction:
 		current_accel = current_accel
-		target_velocity.x = move_toward(velocity.x, current_max_speed  * direction.x * input_dir.length(), current_accel*delta)
-		target_velocity.z = move_toward(velocity.z, current_max_speed * direction.z * input_dir.length(), current_accel*delta) 
+		target_velocity.x = move_toward(target_velocity.x, current_max_speed  * direction.x * input_dir.length(), current_accel*delta)
+		target_velocity.z = move_toward(target_velocity.z, current_max_speed * direction.z * input_dir.length(), current_accel*delta) 
+		print("tgt-before: ", target_velocity, " dir.norm: ", direction, " input-dir: ", input_dir.length(), " to.x: ", current_max_speed  * direction.x * input_dir.length())
+		
 		
 		# This rotates... when it works.
 		#if PlayerVariables.underwater and direction and velocity: # target_velocity = target_velocity.rotated(Vector3.UP, direction.angle_to(target_velocity))
