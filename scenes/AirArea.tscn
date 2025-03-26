@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://d23repmsxbhrh"]
 
-[ext_resource type="Script" path="res://scripts/AirArea.gd" id="1_2dsr1"]
+[ext_resource type="Script" uid="uid://c7b3uul87kq1q" path="res://scripts/AirArea.gd" id="1_2dsr1"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yv4u6"]
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://buxj0ffwrhupe"]
 
-[ext_resource type="Script" path="res://scripts/WaterArea.gd" id="1_74gf6"]
-[ext_resource type="Shader" path="res://shaders/Water-ocean.gdshader" id="2_kbdpx"]
+[ext_resource type="Script" uid="uid://grq7513tqtnv" path="res://scripts/WaterArea.gd" id="1_74gf6"]
+[ext_resource type="Shader" uid="uid://bpwxhv8ylamy0" path="res://shaders/Water-ocean.gdshader" id="2_kbdpx"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yv4u6"]
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://fwueot7g7lg6"]
 
-[ext_resource type="Script" path="res://scenes/ocean/Ocean.gd" id="1_38tkn"]
+[ext_resource type="Script" uid="uid://dyf7wm2p2ygjf" path="res://scenes/ocean/Ocean.gd" id="1_38tkn"]
 
 [node name="Ocean" type="Node3D"]
 script = ExtResource("1_38tkn")
